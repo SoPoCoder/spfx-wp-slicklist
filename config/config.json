@@ -1,0 +1,19 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "slicklist-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/slicklist/SlicklistWebPart.js",
+          "manifest": "./src/webparts/slicklist/SlicklistWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "SlicklistWebPartStrings": "lib/webparts/slicklist/loc/{locale}.js",
+    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js"
+  }
+}

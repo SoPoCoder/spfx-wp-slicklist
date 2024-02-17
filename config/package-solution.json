@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "spfx-wp-slicklist-client-side-solution",
+    "id": "9fba765f-3de7-423c-b675-05a73e20b696",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.18.0"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "spfx-wp-slicklist description"
+      },
+      "longDescription": {
+        "default": "spfx-wp-slicklist description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "spfx-wp-slicklist Feature",
+        "description": "The feature that activates elements of the spfx-wp-slicklist solution.",
+        "id": "f331459d-b120-43d6-98ef-4fbffea21f2c",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/spfx-wp-slicklist.sppkg"
+  }
+}

@@ -1,0 +1,160 @@
+@import '~@microsoft/sp-office-ui-fabric-core/dist/sass/SPFabricCore.scss';
+
+//define theme colors
+$themeDark: '[theme:themeDark, default:#005a9e]'; // used to be #143f91;
+$themePrimary: '[theme:themePrimary, default:#0078d7]'; // used to be #117FCA;
+$themeSecondary: '[theme:themeSecondary, default:#2b88d8]';
+$themeTertiary: '[theme:themeTertiary, default:#3366CC]';
+$themeLight: '[theme:themeLight, default:#99BFCC]';
+$themeLighter: '[theme:themeLighter, default:#C7DFEB]';
+$themeWhite: '[theme:white, default:#fff]';
+
+.slicklist {
+  width: 100%;
+  min-width: 800px;
+  max-width: 2000px;
+  margin: 0 auto; // margin-bottom: 800px;
+
+  //filter: drop-shadow(0 0 0.25rem #666);
+  a {
+    text-decoration: none;
+    color: "[theme:link, default:#03787c]";
+    color: var(--link); // note: CSS Custom Properties support is limited to modern browsers only
+
+    &:hover {
+      text-decoration: underline;
+      color: "[theme:linkHovered, default: #014446]";
+      color: var(--linkHovered); // note: CSS Custom Properties support is limited to modern browsers only
+    }
+  }
+
+  table {
+    background-color: $themeDark;
+    border-spacing: 1px;
+    width: 100%;
+  }
+  
+  table th {
+    font-size: 1em;
+    font-weight: normal;
+    color: $themeWhite;
+    background-color: $themeTertiary;
+    padding: 5px;
+    white-space: nowrap;
+    width: 1%;
+  }
+
+  table td {
+    font-size: 1em;
+    background-color: $themeWhite;
+    padding: 4px;
+    white-space: nowrap;
+  }
+
+  thead th {
+    font-size: 1em;
+    background-color: $themeSecondary;
+    padding: 8px;
+  }
+
+  tbody tr {
+    background-color: $themeWhite;
+  }
+  tbody tr:hover td {
+    background-color: $themeLighter;
+  }
+
+  tfoot th {
+    font-size: 1em;
+    background-color: $themeSecondary;
+    padding: 8px;
+    text-align: left;
+
+    span {
+      white-space: nowrap;
+      cursor: pointer;
+    }
+  }
+
+  .title th {
+    font-size: 1.2em;
+    background-color: $themePrimary;
+    padding: 8px;
+  }
+
+  .fields th {
+    margin: 0;
+    padding: 0;
+  }
+
+  input,
+  select {
+    width: 100%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    background-color: $themeWhite;
+    border: none;
+    padding: 5px;
+  }
+
+  ::placeholder {
+    color: gray;
+    text-align: center;
+  }
+
+  ::-ms-input-placeholder {
+    color: gray;
+    text-align: center;
+  }
+
+  .warm {
+    background-color: #feffcc;
+  }
+
+  .warning {
+    background-color: #fce4ec;
+  }
+
+  .totop {
+    background-color: $themeSecondary;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+
+
+}
+
+:global {
+
+  .pcursor {
+    cursor: pointer;
+  }
+
+  .dcursor {
+    cursor: default;
+  }
+  
+  .hideFromMobile,
+  .hideFromTablet,
+  .hideFromDesktop {
+    display: none;
+  }
+
+  @media screen and (min-width: 768px) //tablet
+
+    {
+    .hideFromMobile {
+      display: table-cell;
+    }
+  }
+
+  @media screen and (min-width: 1200px) //laptop
+
+    {
+    .hideFromTablet {
+      display: table-cell;
+    }
+  }
+}
