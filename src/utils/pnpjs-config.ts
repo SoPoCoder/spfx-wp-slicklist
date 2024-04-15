@@ -1,21 +1,17 @@
 import { WebPartContext } from "@microsoft/sp-webpart-base";
-
-// import pnp, pnp logging system, and any other selective imports needed
 import { spfi, SPFI, SPFx  } from "@pnp/sp";
-//import { LogLevel, PnPLogging } from "@pnp/logging";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import "@pnp/sp/batching";
 import "@pnp/sp/fields";
+import "@pnp/sp/items/get-all";
 
+// create an instance of SharePoint Factory Interface for use in the project
+// for more information see https://pnp.github.io/pnpjs/getting-started/
 let _sp: SPFI;
-
 export const getSP = (context: WebPartContext): SPFI => {
-  if (context) {
-    //You must add the @pnp/logging package to include the PnPLogging behavior it is no longer a peer dependency
-    // The LogLevel set's at what level a message will be written to the console
-    _sp = spfi().using(SPFx(context));
-  }
-  return _sp;
+    if (context)
+        _sp = spfi().using(SPFx(context));
+    return _sp;
 };

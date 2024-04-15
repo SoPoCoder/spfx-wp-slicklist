@@ -12,6 +12,7 @@
   // Components that allow authors to embed arbitrary script code should set this to true.
   // https://support.office.com/en-us/article/Turn-scripting-capabilities-on-or-off-1f2c515f-5d7e-448a-9fd7-835da935584f
   "requiresCustomScript": false,
+  "supportsFullBleed": true,
   "supportedHosts": ["SharePointWebPart", "TeamsPersonalApp", "TeamsTab", "SharePointFullPage"],
   "supportsThemeVariants": true,
 
@@ -22,13 +23,19 @@
     "description": { "default": "Displays a list as a highly responsive filterable table." },
     "officeFabricIconFontName": "TableComputed",
     "properties": {
-      "description": "Slicklist",
       "table1Title": "",
       "table1SiteURL": "",
       "table1ListName": "",
-      "visibleColsMobile": "",
-      "visibleColsTablet": "",
-      "visibleColsDesktop": ""
+      "table1VisColsMobile": "",
+      "table1VisColsTablet": "",
+      "table1VisColsDesktop": "",
+      "table1LookupColumn": "",
+      "table2Title": "",
+      "table2SiteURL": "",
+      "table2ListName": "",
+      "table2VisColsMobile": "",
+      "table2VisColsTablet": "",
+      "table2VisColsDesktop": ""
     }
   }]
 }

@@ -10,151 +10,217 @@ $themeLighter: '[theme:themeLighter, default:#C7DFEB]';
 $themeWhite: '[theme:white, default:#fff]';
 
 .slicklist {
-  width: 100%;
-  min-width: 800px;
-  max-width: 2000px;
-  margin: 0 auto; // margin-bottom: 800px;
-
-  //filter: drop-shadow(0 0 0.25rem #666);
-  a {
-    text-decoration: none;
-    color: "[theme:link, default:#03787c]";
-    color: var(--link); // note: CSS Custom Properties support is limited to modern browsers only
-
-    &:hover {
-      text-decoration: underline;
-      color: "[theme:linkHovered, default: #014446]";
-      color: var(--linkHovered); // note: CSS Custom Properties support is limited to modern browsers only
-    }
-  }
-
-  table {
-    background-color: $themeDark;
-    border-spacing: 1px;
     width: 100%;
-  }
-  
-  table th {
-    font-size: 1em;
-    font-weight: normal;
-    color: $themeWhite;
-    background-color: $themeTertiary;
-    padding: 5px;
-    white-space: nowrap;
-    width: 1%;
-  }
-
-  table td {
-    font-size: 1em;
-    background-color: $themeWhite;
-    padding: 4px;
-    white-space: nowrap;
-  }
-
-  thead th {
-    font-size: 1em;
-    background-color: $themeSecondary;
+    //min-width: 800px;
+    //max-width: 2000px;
+    margin: 0 auto; // margin-bottom: 800px;
     padding: 8px;
-  }
 
-  tbody tr {
-    background-color: $themeWhite;
-  }
-  tbody tr:hover td {
-    background-color: $themeLighter;
-  }
+    //filter: drop-shadow(0 0 0.25rem #666);
+    a {
+        text-decoration: none;
+        color: "[theme:link, default:#03787c]";
+        color: var(--link); // note: CSS Custom Properties support is limited to modern browsers only
 
-  tfoot th {
-    font-size: 1em;
-    background-color: $themeSecondary;
-    padding: 8px;
-    text-align: left;
-
-    span {
-      white-space: nowrap;
-      cursor: pointer;
+        &:hover {
+            text-decoration: underline;
+            color: "[theme:linkHovered, default: #014446]";
+            color: var(--linkHovered); // note: CSS Custom Properties support is limited to modern browsers only
+        }
     }
-  }
 
-  .title th {
-    font-size: 1.2em;
-    background-color: $themePrimary;
-    padding: 8px;
-  }
+    table {
+        background-color: $themeDark;
+        border-spacing: 1px;
+        width: 100%;
+    }
 
-  .fields th {
-    margin: 0;
-    padding: 0;
-  }
+    table th {
+        font-size: 1em;
+        font-weight: normal;
+        color: $themeWhite;
+        background-color: $themeSecondary;
+        padding: 8px;
+        white-space: nowrap;
+        width: 1%;
+        text-align: center;
+    }
 
-  input,
-  select {
-    width: 100%;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    background-color: $themeWhite;
-    border: none;
-    padding: 5px;
-  }
+    table td {
+        font-size: 1em;
+        background-color: $themeWhite;
+        padding: 4px;
+        white-space: nowrap;
+    }
 
-  ::placeholder {
-    color: gray;
-    text-align: center;
-  }
+    tbody tr {
+        background-color: $themeWhite;
+    }
 
-  ::-ms-input-placeholder {
-    color: gray;
-    text-align: center;
-  }
+    tbody tr:hover td {
+        background-color: $themeLighter !important;
+        background-blend-mode: multiply;
+    }
 
-  .warm {
-    background-color: #feffcc;
-  }
+    tfoot th {
+        font-size: 1.2em;
+        background-color: $themeDark;
+        padding: 8px;
+        text-align: left;
+    }
 
-  .warning {
-    background-color: #fce4ec;
-  }
+    .title th {
+        background-color: $themeDark;
+        font-size: 1.2em;
+        padding: 8px;
+    }
 
-  .totop {
-    background-color: $themeSecondary;
-    text-align: left;
-    white-space: nowrap;
-  }
+    .fields th {
+        margin: 0;
+        padding: 0;
+    }
 
+    input,
+    select {
+        width: 100%;
+        height: 2em;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        background-color: $themeWhite;
+        border: none;
+        padding: 5px;
+    }
 
+    ::placeholder {
+        color: gray;
+        text-align: center;
+    }
+
+    ::-ms-input-placeholder {
+        color: gray;
+        text-align: center;
+    }
+
+    .warm {
+        background-color: #feffcc;
+    }
+
+    .grouping2 td {
+        background-color: #eeeeee;
+    }
+
+    .warning {
+        background-color: #fce4ec;
+    }
+
+    .totop {
+        display: inline-block;
+        position: absolute;
+        white-space: nowrap;
+        left: 0;
+        padding-left: 20px;
+    }
+
+    .buffer {
+        margin-bottom: 500px;
+    }
+
+}
+
+.slickmodal {
+
+    font-family: Arial, Helvetica, sans-serif;
+    width: 640px;
+    color: #000;
+    padding: 10px;
+
+    h2 {
+        font-family: "Segoe UI", "Segoe UI Web (West European)", "Segoe UI", sans-serif;
+        font-size: 20px;
+        font-weight: 600;
+        margin: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+    }
+
+    button {
+        position: absolute;
+        right: 0;
+        top: 0;
+        margin: 10px;
+        cursor: pointer;
+    }
+
+    table {
+        background-color: $themeDark;
+        border-spacing: 1px;
+        width: 100%;
+        margin-top: 6px;
+    }
+
+    table th {
+        font-size: 1em;
+        font-weight: normal;
+        color: $themeWhite;
+        background-color: $themeTertiary;
+        padding: 5px;
+        white-space: nowrap;
+    }
+
+    table td {
+        background-color: $themeWhite;
+        padding: 4px;
+        white-space: nowrap;
+    }
+
+    table th:first-child,
+    table td:first-child {
+        width: 25%;
+        background-color: $themeLighter;
+    }
 
 }
 
 :global {
 
-  .pcursor {
-    cursor: pointer;
-  }
-
-  .dcursor {
-    cursor: default;
-  }
-  
-  .hideFromMobile,
-  .hideFromTablet,
-  .hideFromDesktop {
-    display: none;
-  }
-
-  @media screen and (min-width: 768px) //tablet
-
-    {
-    .hideFromMobile {
-      display: table-cell;
+    .pcursor {
+        cursor: pointer;
     }
-  }
 
-  @media screen and (min-width: 1200px) //laptop
-
-    {
-    .hideFromTablet {
-      display: table-cell;
+    .dcursor {
+        cursor: default;
     }
-  }
+
+    .mark {
+        text-align: center;
+    }
+
+    .mark:not(:empty) {
+        background-color: #eeeeee !important;
+    }
+
+    .hideFromMobile,
+    .hideFromTablet,
+    .hideFromDesktop {
+        display: none;
+    }
+
+    @media screen and (min-width: 768px) //tablet
+
+        {
+        .hideFromMobile {
+            display: table-cell;
+        }
+    }
+
+    @media screen and (min-width: 1200px) //laptop
+
+        {
+        .hideFromTablet {
+            display: table-cell;
+        }
+    }
 }
