@@ -15,6 +15,9 @@ define([], function() {
     "Table2ListNameFieldLabel": "List Name",
     "Table2VisibleColsMobileFieldLabel": "Visible Columns (Mobile)",
     "Table2VisibleColsTabletFieldLabel": "Visible Columns (Tablet)",
-    "Table2VisibleColsDesktopFieldLabel": "Visible Columns (Desktop)"
+    "Table2VisibleColsDesktopFieldLabel": "Visible Columns (Desktop)",
+    "Table2OrderByColumn1FieldLabel": "Group By",
+    "Table2OrderByColumn2FieldLabel": "Order By",
+    "Table2OrderByColumn3FieldLabel": "Order By Parent",
   }
 });

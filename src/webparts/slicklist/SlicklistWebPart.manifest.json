@@ -35,7 +35,10 @@
       "table2ListName": "",
       "table2VisColsMobile": "",
       "table2VisColsTablet": "",
-      "table2VisColsDesktop": ""
+      "table2VisColsDesktop": "",
+      "orderByColumn1": "",
+      "orderByColumn2": "",
+      "orderByColumn3": ""
     }
   }]
 }

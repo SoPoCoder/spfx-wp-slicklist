@@ -15,6 +15,9 @@ declare interface ISlicklistWebPartStrings {
   Table2VisibleColsMobileFieldLabel: string;
   Table2VisibleColsTabletFieldLabel: string;
   Table2VisibleColsDesktopFieldLabel: string;
+  Table2OrderByColumn1FieldLabel: string;
+  Table2OrderByColumn2FieldLabel: string;
+  Table2OrderByColumn3FieldLabel: string;
 }
 
 declare module 'SlicklistWebPartStrings' {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import "@pnp/sp/lists";
 import { IListItem, ITable2Props, ITable2State } from '../../..';
-import { getColumnClass, getFieldTitle } from '../../../Utils';
+import { getColumnClass, getFieldTitle, getFieldValue } from '../../../Utils';
 import styles from './Slicklist.module.scss';
 import { IFieldInfo } from '@pnp/sp/fields';
 
@@ -29,7 +29,7 @@ export default class Table2 extends React.Component<ITable2Props, ITable2State> 
     }
 
     public render(): React.ReactElement<ITable2Props> {
-        const { tableTitle, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop, orderBy1Col, orderBy3Col, onTopClick } = this.props;
+        const { tableTitle, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop, orderByColumn1, orderByColumn3 } = this.props;
         const { fields, items } = this.state;
 
         let currentUnit: string = "";
@@ -38,7 +38,7 @@ export default class Table2 extends React.Component<ITable2Props, ITable2State> 
                 currentUnit = unit;
                 return (
                     <>
-                        <tr className={`${styles.title}`}><th colSpan={fields.length}><span className={`${styles.totop} pcursor`} onClick={() => onTopClick}>&#9650; TOP</span>{unit}</th></tr>
+                        <tr className={`${styles.title}`}><th colSpan={fields.length}><span className={`${styles.totop} pcursor`} onClick={() => this.props.onTopClick()}>&#9650; TOP</span>{unit}</th></tr>
                         <tr>{fields.map((field, fieldIndex) => <th className={getColumnClass(field.TypeDisplayName, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop)} key={fieldIndex} title={field.Description}>{getFieldTitle(field, items)}</th>)}</tr>
                     </>
                 )
@@ -50,9 +50,9 @@ export default class Table2 extends React.Component<ITable2Props, ITable2State> 
                 <tbody>
                     {items.map((item, itemIndex) =>
                         <>
-                            {tableTitle && itemIndex === 0 ? <tr className={`${styles.title}`}><th colSpan={fields.length}>{tableTitle}</th></tr> : getHeaderRows(item[orderBy1Col])}
-                            <tr key={itemIndex} id={item.Title} className={orderBy3Col && item[orderBy3Col] ? `${styles.grouping2}` : undefined}>{
-                                fields.map((field, fieldIndex) => <td className={getColumnClass(field.TypeDisplayName, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop)} key={fieldIndex}>{item[field.InternalName]}</td>)}
+                            {tableTitle && itemIndex === 0 ? <tr className={`${styles.title}`}><th colSpan={fields.length}>{tableTitle}</th></tr> : getHeaderRows(item[orderByColumn1])}
+                            <tr key={itemIndex} id={item.Title} className={orderByColumn3 && item[orderByColumn3] ? `${styles.grouping2}` : undefined}>{
+                                fields.map((field, fieldIndex) => <td className={getColumnClass(field.TypeDisplayName, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop)} key={fieldIndex} dangerouslySetInnerHTML={{ __html: getFieldValue(item, field) }} />)}
                             </tr>
                         </>
                     )}

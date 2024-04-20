@@ -56,6 +56,9 @@ export interface ISlicklistWebPartProps {
     table2VisColsMobile: number;
     table2VisColsTablet: number;
     table2VisColsDesktop: number;
+    orderByColumn1: string;
+    orderByColumn2: string;
+    orderByColumn3: string;
 }
 
 /*-----------------------------------------------------
@@ -77,9 +80,9 @@ export interface ISlickListProps {
     table2VisColsMobile: number;
     table2VisColsTablet: number;
     table2VisColsDesktop: number;
-    orderBy1Col: string;
-    orderBy2Col: string;
-    orderBy3Col: string;
+    orderByColumn1: string;
+    orderByColumn2: string;
+    orderByColumn3: string;
     // callback functions
     onConfigure: () => void;
     onTopClick: () => void;
@@ -117,9 +120,9 @@ export interface ITable1State {
 Table2 Interfaces
 -----------------------------------------------------*/
 export interface ITable2Props extends ITable {
-    orderBy1Col: string;
-    orderBy2Col: string;
-    orderBy3Col: string;
+    orderByColumn1: string;
+    orderByColumn2: string;
+    orderByColumn3: string;
     onTopClick: () => void;
 }
 

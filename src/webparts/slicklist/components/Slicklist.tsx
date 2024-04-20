@@ -10,7 +10,6 @@ import { Web } from '@pnp/sp/webs';
 import styles from './Slicklist.module.scss';
 import SlickModal from './SlickModal';
 import Table2 from './Table2';
-import { IItems } from '@pnp/sp/items';
 
 export default class Slicklist extends React.Component<ISlickListProps, ISlickListState> {
 
@@ -34,12 +33,13 @@ export default class Slicklist extends React.Component<ISlickListProps, ISlickLi
     /* -----------------------------------------------------------------
         gets fields/items from a SharePoint list based on url & name
     ----------------------------------------------------------------- */
-    private async getListData(siteURL: string, listName: string, tableNumber?: number): Promise<IFieldInfo[]> {
+    private async getListData(siteURL: string, listName: string, tableNumber?: number): Promise<void> {
         if (siteURL && listName) {
+            const { orderByColumn1, orderByColumn2, orderByColumn3 } = this.props
             const web = Web([this._sp.web, siteURL]);
             const listFields: Array<IFieldInfo> = [];
             const listItems: Array<IListItem> = [];
-            web.lists.getByTitle(listName).fields.filter("ReadOnlyField eq false and Hidden eq false")().then(async (fields) => {
+            await web.lists.getByTitle(listName).fields.filter("ReadOnlyField eq false and Hidden eq false")().then((fields) => {
                 if (fields) {
                     // get all the non-hidden fields of the following types
                     fields.map((field: IFieldInfo) => {
@@ -53,32 +53,32 @@ export default class Slicklist extends React.Component<ISlickListProps, ISlickLi
                             listFields.push(field);
                         }
                     });
-                    // get all items in the list
-                    const { orderBy1Col, orderBy2Col, orderBy3Col } = this.props
-                    let items: IItems = web.lists.getByTitle(listName).items;
-                    if (items) {
-                        if (tableNumber && tableNumber === 2){
-                            if (orderBy1Col)
-                                items = items.orderBy(orderBy1Col);
-                            if (orderBy2Col)
-                                items = items.orderBy(orderBy2Col);
-                            if (orderBy3Col)
-                                items = items.orderBy(orderBy3Col, false);
-                        }
-                        await items.getAll().then((items) => {
-                            items.map((item: IListItem) => {
+                    // get all list items for Table1
+                    if (tableNumber === 1)
+                        web.lists.getByTitle(listName).items().then((items) => {
+                            if (items) {
+                                items.map((item) => {
+                                    listItems.push(item);
+                                })
+                                this.setState({ table1Fields: listFields, table1Items: listItems });
+                            }
+                        }).catch((error: Error) => { throw error });
+                    // get all list items for Table2
+                    if (tableNumber === 2) {
+                        let items = web.lists.getByTitle(listName).items;
+                        items = orderByColumn1 ? items.orderBy(orderByColumn1) : items;
+                        items = orderByColumn2 ? items.orderBy(orderByColumn2) : items;
+                        items = orderByColumn3 ? items.orderBy(orderByColumn3, false) : items;
+                        items.getAll().then((result) => {
+                            result.map((item) => {
                                 listItems.push(item);
                             })
-                            if (tableNumber && tableNumber === 1)
-                                this.setState({ table1Fields: listFields, table1Items: listItems });
-                            if (tableNumber && tableNumber === 2)
-                                this.setState({ table2Fields: listFields, table2Items: listItems });
+                            this.setState({ table2Fields: listFields, table2Items: listItems });
                         }).catch((error: Error) => { throw error });
                     }
                 }
             }).catch((error: Error) => { throw error });
         }
-        return [];
     }
 
     public componentDidUpdate(prevProps: ISlickListProps): void {
@@ -93,7 +93,10 @@ export default class Slicklist extends React.Component<ISlickListProps, ISlickLi
         // check to see if Table2 properties changed and update if so
         if (
             prevProps.table2SiteURL !== this.props.table2SiteURL ||
-            prevProps.table2ListName !== this.props.table2ListName
+            prevProps.table2ListName !== this.props.table2ListName ||
+            prevProps.orderByColumn1 !== this.props.orderByColumn1 ||
+            prevProps.orderByColumn2 !== this.props.orderByColumn2 ||
+            prevProps.orderByColumn3 !== this.props.orderByColumn3
         ) {
             this.getListData(this.props.table2SiteURL, this.props.table2ListName, 2).catch((error: Error) => { throw error });
         }
@@ -127,9 +130,9 @@ export default class Slicklist extends React.Component<ISlickListProps, ISlickLi
             tableVisColsDesktop={this.props.table2VisColsDesktop}
             fields={this.state.table2Fields}
             items={this.state.table2Items}
-            orderBy1Col={this.props.orderBy1Col}
-            orderBy2Col={this.props.orderBy2Col}
-            orderBy3Col={this.props.orderBy3Col}
+            orderByColumn1={this.props.orderByColumn1}
+            orderByColumn2={this.props.orderByColumn2}
+            orderByColumn3={this.props.orderByColumn3}
             onTopClick={this.props.onTopClick}
         />
         const Modal = <SlickModal
