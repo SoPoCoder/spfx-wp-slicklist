@@ -164,24 +164,32 @@ $themeWhite: '[theme:white, default:#fff]';
     table th {
         font-size: 1em;
         font-weight: normal;
-        color: $themeWhite;
-        background-color: $themeTertiary;
         padding: 5px;
         white-space: nowrap;
-    }
-
-    table td {
-        background-color: $themeWhite;
-        padding: 4px;
-        white-space: nowrap;
-    }
-
-    table th:first-child,
-    table td:first-child {
         width: 25%;
-        background-color: $themeLighter;
     }
 
+    table th, table td {
+        background-color: white;
+        color: #000;
+        padding: 5px;
+    }
+
+    table tbody th {
+        opacity: .9;
+    }
+
+    table tbody td {
+        opacity: .95;
+    }
+
+    table tfoot th {
+        opacity: .8;
+    }
+
+    table tfoot td {
+        opacity: .85;
+    }
 }
 
 :global {

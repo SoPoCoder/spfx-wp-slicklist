@@ -10,6 +10,7 @@ import { Web } from '@pnp/sp/webs';
 import styles from './Slicklist.module.scss';
 import SlickModal from './SlickModal';
 import Table2 from './Table2';
+import { getTable2Item } from '../../../Utils';
 
 export default class Slicklist extends React.Component<ISlickListProps, ISlickListState> {
 
@@ -41,15 +42,21 @@ export default class Slicklist extends React.Component<ISlickListProps, ISlickLi
             const listItems: Array<IListItem> = [];
             await web.lists.getByTitle(listName).fields.filter("ReadOnlyField eq false and Hidden eq false")().then((fields) => {
                 if (fields) {
+                    // get the user selected column names for orderBy1, orderBy2 and orderBy3
+
                     // get all the non-hidden fields of the following types
                     fields.map((field: IFieldInfo) => {
                         if (
-                            field.TypeDisplayName === FieldTypes.Single ||
+                            (field.TypeDisplayName === FieldTypes.Single ||
                             field.TypeDisplayName === FieldTypes.Multiple ||
                             field.TypeDisplayName === FieldTypes.Choice ||
                             field.TypeDisplayName === FieldTypes.Boolean ||
                             field.TypeDisplayName === FieldTypes.Number ||
-                            field.TypeDisplayName === FieldTypes.DateTime) {
+                            field.TypeDisplayName === FieldTypes.DateTime) &&
+                            field.InternalName !== orderByColumn1 && 
+                            field.InternalName !== orderByColumn2 && 
+                            field.InternalName !== orderByColumn3
+                        ) {
                             listFields.push(field);
                         }
                     });
@@ -136,8 +143,10 @@ export default class Slicklist extends React.Component<ISlickListProps, ISlickLi
             onTopClick={this.props.onTopClick}
         />
         const Modal = <SlickModal
-            fields={this.state.table1Fields}
-            item={this.state.clickedItem}
+            table1Fields={this.state.table1Fields}
+            table1Item={this.state.clickedItem}
+            table2Fields={this.state.table2Fields.filter(field => { return field.Title.trim() })} // filter out fields with blank spaces as the Title
+            table2Item={getTable2Item(this.props.lookupColumn, this.state.clickedItem, this.state.table2Items)}
             showModal={this.state.clickedItem ? true : false}
             onClose={() => { this.setState({ clickedItem: undefined }) }}
         />

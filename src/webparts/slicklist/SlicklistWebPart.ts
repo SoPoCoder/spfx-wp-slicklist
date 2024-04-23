@@ -23,10 +23,9 @@ import { ISPList, ISPLists, ISPSite, ISlickListProps, ISlicklistWebPartProps } f
 
 /*-----------------------------------------------------
 Todo List:
-1. allow adding second lookup table for additional information in modal popup 
-2. add property for toggling between show all/none by default (will require paging)
-3. add DOMpurify package to sanitize field values for rich text field types
-4. test for desktop, tablet, mobile
+1. add property for toggling between show all/none by default (will require paging)
+2. add DOMpurify package to sanitize field values for rich text field types
+3. test for desktop, tablet, mobile
 -----------------------------------------------------*/
 export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWebPartProps> {
 

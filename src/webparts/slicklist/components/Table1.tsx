@@ -96,7 +96,7 @@ export default class Table1 extends React.Component<ITable1Props, ITable1State> 
                 <thead>
                     <tr className={`${styles.title}`}><th colSpan={fields.length}>{tableTitle}</th></tr>
                     <tr>
-                        {fields.map((field, fieldIndex) => <th className={getColumnClass(field.TypeDisplayName, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop)} key={fieldIndex} title={field.Description}>{getFieldTitle(field, items)}</th>)}
+                        {fields.map((field, fieldIndex) => <th className={getColumnClass(field.TypeDisplayName, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop)} key={fieldIndex} title={field.Description}>{getFieldTitle(field, this.props.items)}</th>)}
                     </tr>
                     <tr className={`${styles.fields}`} id="fields">
                         {fields.map((field, fieldIndex) => <th className={getColumnClass(field.TypeDisplayName, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop)} key={fieldIndex}>{this.getFieldInput(field, filterField, filterValue)}</th>)}

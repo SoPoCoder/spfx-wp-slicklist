@@ -135,8 +135,10 @@ export interface ITable2State {
 SlickModal Interfaces
 -----------------------------------------------------*/
 export interface ISlickModalProps {
-    fields: Array<IFieldInfo>;
-    item: IListItem | undefined;
+    table1Fields: Array<IFieldInfo>;
+    table1Item: IListItem | undefined;
+    table2Fields: Array<IFieldInfo>;
+    table2Item: IListItem | undefined;
     showModal: boolean;
     onClose: (value: boolean) => void;
 }

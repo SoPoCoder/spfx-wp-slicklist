@@ -33,6 +33,18 @@ export function filterItems(filterField: IFieldInfo | undefined, filterValue: st
 }
 
 /* -----------------------------------------------------------------
+gets item from table2Items based on selected item from table1Items
+----------------------------------------------------------------- */
+export function getTable2Item(lookupColumn: string | undefined, table1Item: IListItem | undefined, table2Items: IListItem[]): IListItem | undefined {
+    // gets the value of the defined lookup column for the user selected item from table1Items
+    const clickedLookupColValue = lookupColumn && table1Item ? table1Item[lookupColumn] : "";
+    // filters table2Items on the defined lookup column based on the value above
+    const table2ItemsFiltered: IListItem[] | undefined = table2Items.filter(item => { return item.Title === clickedLookupColValue });
+    // returns the first entry of the filtered list if items exist, else returns undefined
+    return table2ItemsFiltered && table2ItemsFiltered.length > -1 ? table2ItemsFiltered[0] : undefined;
+}
+
+/* -----------------------------------------------------------------
     gets a table cells class based on column index and field type
 ----------------------------------------------------------------- */
 export function getColumnClass(fieldType: string, fieldIndex: number, tableVisColsMobile: number, tableVisColsTablet: number, tableVisColsDesktop: number, lookupColIndex?: number): string | undefined {
@@ -60,7 +72,7 @@ export function getColumnClass(fieldType: string, fieldIndex: number, tableVisCo
     gets a columns title and formats it based on longest value
 ----------------------------------------------------------------- */
 export function getFieldTitle(field: IFieldInfo, items: Array<IListItem>): string {
-    //skip for multi-line fields which may include lengthy hidden markup
+    //skip for multi-line fields which may include lengthy hidden markup (recommend leave these columns at end of table as their width will change with filtering)
     if (field.TypeDisplayName !== FieldTypes.Multiple) {
 
         //get the length in characters of the longest entry for the given field
