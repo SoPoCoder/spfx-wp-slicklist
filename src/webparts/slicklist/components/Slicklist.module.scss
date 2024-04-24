@@ -133,7 +133,17 @@ $themeWhite: '[theme:white, default:#fff]';
     font-family: Arial, Helvetica, sans-serif;
     width: 640px;
     color: #000;
-    padding: 10px;
+    display: flex;
+    padding: 5px;
+
+    header {
+        background-color: $themeWhite;
+        position: sticky;
+        width: 100%;
+        top: 0;
+        z-index: 1;
+        padding-bottom: 3px;
+    }
 
     h2 {
         font-family: "Segoe UI", "Segoe UI Web (West European)", "Segoe UI", sans-serif;
@@ -150,7 +160,7 @@ $themeWhite: '[theme:white, default:#fff]';
         position: absolute;
         right: 0;
         top: 0;
-        margin: 10px;
+        margin-right: 3px;
         cursor: pointer;
     }
 
@@ -158,7 +168,6 @@ $themeWhite: '[theme:white, default:#fff]';
         background-color: $themeDark;
         border-spacing: 1px;
         width: 100%;
-        margin-top: 6px;
     }
 
     table th {
