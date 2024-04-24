@@ -134,7 +134,7 @@ $themeWhite: '[theme:white, default:#fff]';
     width: 640px;
     color: #000;
     display: flex;
-    padding: 5px;
+    padding: 8px;
 
     header {
         background-color: $themeWhite;
@@ -160,7 +160,6 @@ $themeWhite: '[theme:white, default:#fff]';
         position: absolute;
         right: 0;
         top: 0;
-        margin-right: 3px;
         cursor: pointer;
     }
 

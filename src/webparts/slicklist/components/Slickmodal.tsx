@@ -21,8 +21,8 @@ export default class SlickModal extends React.Component<ISlickModalProps> {
                     <button type="button" onClick={() => this.props.onClose(false)}>╳</button>
                 </header>
                 <table>
-                    <tbody>{this.props.table1Fields.map((field, fieldIndex) => <tr key={fieldIndex}><th>{field.Description ? field.Description : field.Title}</th><td>{this.getItemFieldValue(this.props.table1Item, field)}</td></tr>)}</tbody>
-                    <tfoot>{this.props.table2Fields.map((field, fieldIndex) => <tr key={fieldIndex}><th>{field.Description ? field.Description : field.Title}</th><td>{this.getItemFieldValue(this.props.table2Item, field)}</td></tr>)}</tfoot>
+                    <tbody>{this.props.table1Fields.map((field, fieldIndex) => <tr key={fieldIndex}><th>{field.Description ? field.Description : field.Title}</th><td dangerouslySetInnerHTML={{ __html: this.getItemFieldValue(this.props.table1Item, field) }} /></tr>)}</tbody>
+                    <tfoot>{this.props.table2Fields.map((field, fieldIndex) => <tr key={fieldIndex}><th>{field.Description ? field.Description : field.Title}</th><td dangerouslySetInnerHTML={{ __html: this.getItemFieldValue(this.props.table2Item, field) }} /></tr>)}</tfoot>
                 </table>
             </Modal>
         );
