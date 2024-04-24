@@ -1,14 +1,15 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
   "solution": {
-    "name": "spfx-wp-slicklist-client-side-solution",
+    "name": "Slicklist",
     "id": "9fba765f-3de7-423c-b675-05a73e20b696",
     "version": "1.0.0.0",
     "includeClientSideAssets": true,
     "skipFeatureDeployment": true,
     "isDomainIsolated": false,
+    "iconPath": "images/AppIcon.png",
     "developer": {
-      "name": "",
+      "name": "Scott Lyons",
       "websiteUrl": "",
       "privacyUrl": "",
       "termsOfUseUrl": "",
@@ -16,10 +17,10 @@
     },
     "metadata": {
       "shortDescription": {
-        "default": "spfx-wp-slicklist description"
+        "default": "Displays a list as a highly responsive filterable table."
       },
       "longDescription": {
-        "default": "spfx-wp-slicklist description"
+        "default": "Displays a SharePoint list as a highly responsive filterable table, along with an optional lookup table and modal display window."
       },
       "screenshotPaths": [],
       "videoUrl": "",
