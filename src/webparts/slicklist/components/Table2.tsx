@@ -28,6 +28,13 @@ export default class Table2 extends React.Component<ITable2Props, ITable2State> 
         }
     }
 
+    /* -----------------------------------------------------------------
+        passes click events up to parent component based on field index
+    ----------------------------------------------------------------- */
+    private onClickHandler(selectedItem: IListItem): void {
+        this.props.onModalClick(selectedItem);
+    }
+
     public render(): React.ReactElement<ITable2Props> {
         const { tableTitle, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop, orderByColumn1, orderByColumn3 } = this.props;
         const { fields, items } = this.state;
@@ -52,7 +59,7 @@ export default class Table2 extends React.Component<ITable2Props, ITable2State> 
                         <>
                             {tableTitle && itemIndex === 0 ? <tr className={`${styles.title}`}><th colSpan={fields.length}>{tableTitle}</th></tr> : getHeaderRows(item[orderByColumn1])}
                             <tr key={itemIndex} id={item.Title} className={orderByColumn3 && item[orderByColumn3] ? `${styles.grouping2}` : undefined}>{
-                                fields.map((field, fieldIndex) => <td className={getColumnClass(field.TypeDisplayName, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop)} key={fieldIndex} dangerouslySetInnerHTML={{ __html: getFieldValue(item, field) }} />)}
+                                fields.map((field, fieldIndex) => <td className={`pcursor ${getColumnClass(field.TypeDisplayName, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop)}`} key={fieldIndex} onClick={(e) => this.onClickHandler(item)} dangerouslySetInnerHTML={{ __html: getFieldValue(item, field) }} />)}
                             </tr>
                         </>
                     )}

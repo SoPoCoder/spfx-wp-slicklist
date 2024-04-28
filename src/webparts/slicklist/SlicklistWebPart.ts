@@ -21,12 +21,6 @@ import { Web } from '@pnp/sp/webs';
 import { IFieldInfo } from '@pnp/sp/fields';
 import { ISPList, ISPLists, ISPSite, ISlickListProps, ISlicklistWebPartProps } from '../..';
 
-/*-----------------------------------------------------
-Todo List:
-1. add property for toggling between show all/none by default (will require paging)
-2. add DOMpurify package to sanitize field values for rich text field types
-3. test for desktop, tablet, mobile
------------------------------------------------------*/
 export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWebPartProps> {
 
     private _sp: SPFI;
@@ -152,9 +146,6 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
                 this._orderByColumn1DropdownDisabled = false;
                 this._orderByColumn2DropdownDisabled = false;
                 this._orderByColumn3DropdownDisabled = false;
-                this.properties.orderByColumn1 = "";
-                this.properties.orderByColumn2 = "";
-                this.properties.orderByColumn3 = "";
                 return true;
             }
         }
@@ -240,12 +231,6 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
             this._orderByColumn2DropdownDisabled = true;
             this._orderByColumn3DropdownDisabled = true;
             await this._getColumnChoices(this.properties.table2SiteURL, this.properties.table2ListName, 2);
-        } else if (propertyPath === "orderByColumn1") {
-            this.properties.orderByColumn1 = newValue ?? "";
-        } else if (propertyPath === "orderByColumn2") {
-            this.properties.orderByColumn2 = newValue ?? "";
-        } else if (propertyPath === "orderByColumn3") {
-            this.properties.orderByColumn3 = newValue ?? "";
         } else {
             super.onPropertyPaneFieldChanged(propertyPath, oldValue, newValue);
         }

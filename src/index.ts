@@ -93,7 +93,8 @@ export interface ISlickListState {
     // table 1 state
     table1Fields: Array<IFieldInfo>;
     table1Items: Array<IListItem>;
-    clickedItem: IListItem | undefined;
+    clickedTable1Item: IListItem | undefined;
+    clickedTable2Item: IListItem | undefined;
     clickedLookup: string;
     // table 2 state
     table2Fields: Array<IFieldInfo>;
@@ -123,6 +124,7 @@ export interface ITable2Props extends ITable {
     orderByColumn1: string;
     orderByColumn2: string;
     orderByColumn3: string;
+    onModalClick: (item: IListItem) => void;
     onTopClick: () => void;
 }
 
@@ -137,7 +139,7 @@ SlickModal Interfaces
 export interface ISlickModalProps {
     table1Fields: Array<IFieldInfo>;
     table1Item: IListItem | undefined;
-    table2Fields: Array<IFieldInfo>;
+    table2Fields: Array<IFieldInfo> | undefined;
     table2Item: IListItem | undefined;
     showModal: boolean;
     onClose: (value: boolean) => void;

@@ -10,9 +10,9 @@ $themeLighter: '[theme:themeLighter, default:#C7DFEB]';
 $themeWhite: '[theme:white, default:#fff]';
 
 .slicklist {
-    width: 100%;
-    //min-width: 800px;
-    //max-width: 2000px;
+
+    font-family: "Segoe UI", "Segoe UI Web (West European)", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+    width: 99%;
     margin: 0 auto; // margin-bottom: 800px;
     padding: 8px;
 
@@ -130,7 +130,7 @@ $themeWhite: '[theme:white, default:#fff]';
 
 .slickmodal {
 
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Segoe UI", "Segoe UI Web (West European)", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
     width: 640px;
     color: #000;
     display: flex;

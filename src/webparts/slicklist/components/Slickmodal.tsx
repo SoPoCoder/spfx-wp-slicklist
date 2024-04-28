@@ -14,15 +14,17 @@ export default class SlickModal extends React.Component<ISlickModalProps> {
         return "";
     }
     public render(): React.ReactElement<ISlickModalProps> {
+        const { table1Fields, showModal, onClose, table1Item, table2Item} = this.props;
+        const table2Fields = this.props.table2Fields ? this.props.table2Fields : [];
         return (
-            <Modal isOpen={this.props.showModal} isBlocking={false} containerClassName={`${styles.slickmodal}`}>
+            <Modal isOpen={showModal} isBlocking={false} containerClassName={`${styles.slickmodal}`}>
                 <header>
-                    <h2>{this.props.table1Fields[0] ? this.props.table1Fields[0].Title : "More"} Details</h2>
-                    <button type="button" onClick={() => this.props.onClose(false)}>╳</button>
+                    <h2>{table1Fields[0] ? table1Fields[0].Title : "More"} Details</h2>
+                    <button type="button" onClick={() => onClose(false)}>╳</button>
                 </header>
                 <table>
-                    <tbody>{this.props.table1Fields.map((field, fieldIndex) => <tr key={fieldIndex}><th>{field.Description ? field.Description : field.Title}</th><td dangerouslySetInnerHTML={{ __html: this.getItemFieldValue(this.props.table1Item, field) }} /></tr>)}</tbody>
-                    <tfoot>{this.props.table2Fields.map((field, fieldIndex) => <tr key={fieldIndex}><th>{field.Description ? field.Description : field.Title}</th><td dangerouslySetInnerHTML={{ __html: this.getItemFieldValue(this.props.table2Item, field) }} /></tr>)}</tfoot>
+                    <tbody>{table1Fields.map((field, fieldIndex) => <tr key={fieldIndex}><th>{field.Description ? field.Description : field.Title}</th><td dangerouslySetInnerHTML={{ __html: this.getItemFieldValue(table1Item, field) }} /></tr>)}</tbody>
+                    <tfoot>{table2Fields.map((field, fieldIndex) => <tr key={fieldIndex}><th>{field.Description ? field.Description : field.Title}</th><td dangerouslySetInnerHTML={{ __html: this.getItemFieldValue(table2Item, field) }} /></tr>)}</tfoot>
                 </table>
             </Modal>
         );
