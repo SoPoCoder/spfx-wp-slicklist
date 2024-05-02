@@ -24,7 +24,7 @@ export default class SlickModal extends React.Component<ISlickModalProps> {
         const { table1Fields, showModal, onClose, table1Item, table2Item} = this.props;
         const table2Fields = this.props.table2Fields ? this.props.table2Fields : [];
         return (
-            <Modal isOpen={showModal} isBlocking={false} containerClassName={`${styles.slickmodal}`}>
+            <Modal isOpen={showModal} isBlocking={false} ignoreExternalFocusing={false} containerClassName={`${styles.slickmodal}`}>
                 <header>
                     <h2>{table1Fields[0] ? table1Fields[0].Title : "More"} Details</h2>
                     <button type="button" onClick={() => onClose(false)}>╳</button>
