@@ -7,6 +7,13 @@ import { FieldTypes, IListItem, ISlickModalProps } from '../../..';
 export default class SlickModal extends React.Component<ISlickModalProps> {
     private getItemFieldValue(item: IListItem | undefined, field: IFieldInfo): string {
         if (item) {
+            // if field value is a file, format it as a link to the file
+            if (field.TypeDisplayName === FieldTypes.File) {
+                const fileLeafRef : string = item.FileLeafRef;
+                const fileRef : string = item.FileRef; 
+                return `<a href='${fileRef}'>${fileLeafRef}</a>`;
+            }
+            // if field value is boolean, display yes or no
             if (field.TypeDisplayName === FieldTypes.Boolean)
                 return item[field.InternalName] ? "Yes" : "No";
             return item[field.InternalName] ?? "";

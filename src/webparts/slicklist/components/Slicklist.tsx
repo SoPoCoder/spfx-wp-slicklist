@@ -46,7 +46,9 @@ export default class Slicklist extends React.Component<ISlickListProps, ISlickLi
                     // get all the non-hidden fields of the following types
                     fields.map((field: IFieldInfo) => {
                         if (
-                            (field.TypeDisplayName === FieldTypes.Single ||
+                            (
+                                field.TypeDisplayName === FieldTypes.File ||
+                                field.TypeDisplayName === FieldTypes.Single ||
                                 field.TypeDisplayName === FieldTypes.Multiple ||
                                 field.TypeDisplayName === FieldTypes.Choice ||
                                 field.TypeDisplayName === FieldTypes.Boolean ||
@@ -61,7 +63,7 @@ export default class Slicklist extends React.Component<ISlickListProps, ISlickLi
                     });
                     // get all list items for Table1
                     if (tableNumber === 1)
-                        web.lists.getByTitle(listName).items().then((items) => {
+                        web.lists.getByTitle(listName).items.select("*","FileLeafRef","FileRef")().then((items) => {
                             if (items) {
                                 items.map((item) => {
                                     listItems.push(item);

@@ -29,6 +29,7 @@ export interface ITable {
 }
 
 export enum FieldTypes {
+    File = "File",
     Single = "Single line of text",
     Multiple = "Multiple lines of text",
     Choice = "Choice",

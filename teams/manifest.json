@@ -1,0 +1,52 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.8/MicrosoftTeams.schema.json",
+    "manifestVersion": "1.8",
+    "packageName": "Slicklist",
+    "id": "6e5eefc3-9350-48fa-b6af-623485d21486",
+    "version": "1.0.0",
+    "developer": {
+        "name": "Scott Lyons",
+        "websiteUrl": "https://github.com/SoPoCoder/spfx-wp-slicklist",
+        "privacyUrl": "",
+        "termsOfUseUrl": "",
+        "mpnId": "Undefined-1.18.0"
+      },
+    "name": {
+      "short": "Slicklist"
+    },
+    "description": {
+      "short": "Displays a list as a highly responsive filterable table.",
+      "full": "Displays a SharePoint list as a highly responsive filterable table, along with an optional lookup table and modal display window."
+    },
+    "icons": {
+      "outline": "6e5eefc3-9350-48fa-b6af-623485d21486_outline.png",
+      "color": "6e5eefc3-9350-48fa-b6af-623485d21486_color.png"
+    },
+    "accentColor": "#004578",
+    "configurableTabs": [
+      {
+        "configurationUrl": "https://{teamSiteDomain}/_layouts/15/TeamsLogon.aspx?SPFX=true&dest=/_layouts/15/teamshostedapp.aspx%3Fteams%26componentId=6e5eefc3-9350-48fa-b6af-623485d21486",
+        "canUpdateConfiguration": true,
+        "scopes": [
+          "team",
+          "groupchat"
+        ],
+        "context": [
+          "channelTab",
+          "privateChatTab",
+          "meetingSidePanel",
+          "meetingDetailsTab",
+          "meetingChatTab"
+        ]
+      }
+    ],
+    "validDomains": [
+      "*.login.microsoftonline.com",
+      "*.sharepoint.com",
+      "resourceseng.blob.core.windows.net"
+    ],
+    "webApplicationInfo": {
+      "resource": "https://{teamSiteDomain}",
+      "id": "00000003-0000-0ff1-ce00-000000000000"
+    }
+  }

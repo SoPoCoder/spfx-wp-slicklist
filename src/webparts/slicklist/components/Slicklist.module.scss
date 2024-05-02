@@ -123,7 +123,7 @@ $themeWhite: '[theme:white, default:#fff]';
     }
 
     .buffer {
-        margin-bottom: 500px;
+        margin-bottom: 1500px;
     }
 
 }
@@ -214,7 +214,7 @@ $themeWhite: '[theme:white, default:#fff]';
         text-align: center;
     }
 
-    .mark:not(:empty) {
+    .mark:empty {
         background-color: #eeeeee !important;
     }
 
