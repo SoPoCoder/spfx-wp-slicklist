@@ -1,5 +1,6 @@
 import { IFieldInfo } from "@pnp/sp/fields";
 import { FieldTypes, IListItem } from ".";
+import linkifyHtml from "linkify-html";
 
 /* -----------------------------------------------------------------
     filters an array of IListItem taking into account field type
@@ -100,14 +101,19 @@ export function getFieldTitle(field: IFieldInfo, items: Array<IListItem>): strin
     gets a table cells value and formats it based on field type
 ----------------------------------------------------------------- */
 export function getFieldValue(item: IListItem, field: IFieldInfo): string {
+    const strItem = item[field.InternalName];
     // if field value is a date, format it as a string
     if (field.TypeDisplayName === FieldTypes.DateTime) {
-        return new Date(item[field.InternalName]).toLocaleDateString('en-US', { timeZone: 'UTC' });
+        return new Date(strItem).toLocaleDateString('en-US', { timeZone: 'UTC' });
     }
     // if field value is a Yes/No boolean, display checkmark for True and nothing for false
     if (field.TypeDisplayName === FieldTypes.Boolean) {
-        return item[field.InternalName] ? "✓" : "";
+        return strItem ? "✓" : "";
+    }
+    // if field is a single line string, check if any hyperlinks are present and linkify them
+    if (field.TypeDisplayName === FieldTypes.Single) {
+        return strItem ? linkifyHtml(strItem, { defaultProtocol: "https" }) : "";
     }
     // for all other field value types, simply display value as string
-    return item[field.InternalName];
+    return strItem;
 }

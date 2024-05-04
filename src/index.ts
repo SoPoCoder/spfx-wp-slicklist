@@ -35,7 +35,8 @@ export enum FieldTypes {
     Choice = "Choice",
     Boolean = "Yes/No",
     Number = "Number",
-    DateTime = "Date and Time"
+    DateTime = "Date and Time",
+    Link = "Hyperlink or Picture" //not currently using this type because it's returned as an object rather than string
 }
 
 /*-----------------------------------------------------
