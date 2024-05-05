@@ -112,7 +112,7 @@ export function getFieldValue(item: IListItem, field: IFieldInfo): string {
     }
     // if field is a single line string, check if any hyperlinks are present and linkify them
     if (field.TypeDisplayName === FieldTypes.Single) {
-        return strItem ? linkifyHtml(strItem, { defaultProtocol: "https" }) : "";
+        return strItem ? linkifyHtml(strItem, { defaultProtocol: "https", target: "_blank" }) : "";
     }
     // for all other field value types, simply display value as string
     return strItem;
