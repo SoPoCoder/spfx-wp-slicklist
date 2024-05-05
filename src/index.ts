@@ -55,6 +55,8 @@ export interface ISlicklistWebPartProps {
     table2Title: string;
     table2SiteURL: string;
     table2ListName: string;
+    showTable2: boolean;
+    // table 2 additional properties
     table2VisColsMobile: number;
     table2VisColsTablet: number;
     table2VisColsDesktop: number;
@@ -79,6 +81,8 @@ export interface ISlickListProps {
     table2Title: string;
     table2SiteURL: string;
     table2ListName: string;
+    showTable2: boolean;
+    // table 2 additional properties
     table2VisColsMobile: number;
     table2VisColsTablet: number;
     table2VisColsDesktop: number;

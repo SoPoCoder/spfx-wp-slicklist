@@ -104,7 +104,8 @@ export default class Slicklist extends React.Component<ISlickListProps, ISlickLi
             prevProps.table2ListName !== this.props.table2ListName ||
             prevProps.orderByColumn1 !== this.props.orderByColumn1 ||
             prevProps.orderByColumn2 !== this.props.orderByColumn2 ||
-            prevProps.orderByColumn3 !== this.props.orderByColumn3
+            prevProps.orderByColumn3 !== this.props.orderByColumn3 || 
+            prevProps.showTable2 !== this.props.showTable2
         ) {
             this.getListData(this.props.table2SiteURL, this.props.table2ListName, 2).catch((error: Error) => { throw error });
         }
@@ -119,7 +120,7 @@ export default class Slicklist extends React.Component<ISlickListProps, ISlickLi
             buttonLabel="Choose a List"
             onConfigure={this.props.onConfigure}
         />
-        const Table1Frag = <Table1
+        const table1 = <Table1
             tableTitle={this.props.table1Title}
             tableVisColsMobile={this.props.table1VisColsMobile}
             tableVisColsTablet={this.props.table1VisColsTablet}
@@ -131,7 +132,7 @@ export default class Slicklist extends React.Component<ISlickListProps, ISlickLi
             onModalClick={(item: IListItem) => { this.setState({ clickedTable1Item: item }) }}
             onLookupClick={this.props.onLookupClick}
         />
-        const Table2Frag = <Table2
+        const table2 = <Table2
             tableTitle={this.props.table2Title}
             tableVisColsMobile={this.props.table2VisColsMobile}
             tableVisColsTablet={this.props.table2VisColsTablet}
@@ -163,9 +164,9 @@ export default class Slicklist extends React.Component<ISlickListProps, ISlickLi
 
         // if only table1 list has been selected render Table1 and Modal, if lookup field has been selected, render Table1, Table2 and Modal, else show Placeholder
         if (this.props.table1ListName) {
-            if (this.props.lookupColumn)
-                return (<div className={`${styles.slicklist}`}>{React.createElement(React.Fragment, this.props, [Table1Frag, Table2Frag, Modal1, Modal2])}</div>);
-            return (<div className={`${styles.slicklist}`}>{React.createElement(React.Fragment, this.props, [Table1Frag, Modal1])}</div>);
+            if (this.props.lookupColumn && this.props.showTable2)
+                return (<div className={`${styles.slicklist}`}>{React.createElement(React.Fragment, this.props, [table1, table2, Modal1, Modal2])}</div>);
+            return (<div className={`${styles.slicklist}`}>{React.createElement(React.Fragment, this.props, [table1, Modal1])}</div>);
         }
         return placeholder;
     }

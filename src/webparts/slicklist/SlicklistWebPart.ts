@@ -5,6 +5,7 @@ import {
     IPropertyPaneConfiguration,
     IPropertyPaneDropdownOption,
     IPropertyPaneGroup,
+    PropertyPaneCheckbox,
     PropertyPaneDropdown,
     PropertyPaneSlider,
     PropertyPaneTextField
@@ -46,6 +47,7 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
                 table2Title: this.properties.table2Title,
                 table2SiteURL: this.properties.table2SiteURL,
                 table2ListName: this.properties.table2ListName,
+                showTable2: this.properties.showTable2,
                 table2VisColsMobile: this.properties.table2VisColsMobile,
                 table2VisColsTablet: this.properties.table2VisColsTablet,
                 table2VisColsDesktop: this.properties.table2VisColsDesktop,
@@ -307,6 +309,20 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
                             selectedKey: this.properties.table2ListName,
                             disabled: this._list2NameDropdownDisabled,
                         }),
+                        PropertyPaneCheckbox('showTable2', {
+                            text: strings.ShowTable2FieldLabel,
+                            checked: this.properties.showTable2
+                        })
+                    ]
+                }
+            )
+        }
+        
+        if (this.properties.showTable2) {
+            propertyPaneGroups.push(
+                {
+                    groupName: strings.Table2GroupName,
+                    groupFields: [
                         PropertyPaneSlider('table2VisColsMobile', {
                             label: strings.Table2VisibleColsMobileFieldLabel,
                             min: this._visColMin,
