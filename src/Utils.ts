@@ -102,19 +102,29 @@ export function getFieldTitle(field: IFieldInfo, items: Array<IListItem>): strin
 /* -----------------------------------------------------------------
     gets a table cells value and formats it based on field type
 ----------------------------------------------------------------- */
-export function getFieldValue(item: IListItem, field: IFieldInfo): string {
-    const strItem = item[field.InternalName];
-    // if field value is a date, format it as a string
-    if (field.TypeDisplayName === FieldTypes.DateTime) {
-        return new Date(strItem).toLocaleDateString('en-US', { timeZone: 'UTC' });
-    }
-    // if field value is a Yes/No boolean, display checkmark for True and nothing for false
-    if (field.TypeDisplayName === FieldTypes.Boolean) {
-        return strItem ? "✓" : "";
-    }
-    // if field is a single line string, check if any hyperlinks are present and linkify them
-    if (field.TypeDisplayName === FieldTypes.Single) {
-        return strItem ? linkifyHtml(strItem, { defaultProtocol: "https", target: "_blank" }) : "";
+export function getFieldValue(item: IListItem | undefined, field: IFieldInfo, isModalTable: boolean = false): string {
+    let strItem: string ="";
+    if (item && field && item[field.InternalName]) {
+        // get value for specified item and field
+        strItem = item[field.InternalName];
+        // if field value is a file, format it as a link to the file
+        if (field.TypeDisplayName === FieldTypes.File && isModalTable) {
+            const fileLeafRef: string = item.FileLeafRef;
+            const fileRef: string = item.FileRef;
+            return `<a href='${fileRef}' target="_blank">${fileLeafRef}</a>`; //TODO: display file icon instead of file name
+        }
+        // if field value is a date, format it as a string
+        if (field.TypeDisplayName === FieldTypes.DateTime) {
+            return new Date(strItem).toLocaleDateString('en-US', { timeZone: 'UTC' });
+        }
+        // if field value is a Yes/No boolean, display checkmark for True and nothing for false
+        if (field.TypeDisplayName === FieldTypes.Boolean) {
+            return strItem ? "✓" : "";
+        }
+        // if field is a single line string, check if any hyperlinks are present and linkify them
+        if (field.TypeDisplayName === FieldTypes.Single) {
+            return strItem ? linkifyHtml(strItem, { defaultProtocol: "https", target: "_blank" }) : "";
+        }
     }
     // for all other field value types, simply display value as string
     return strItem;
