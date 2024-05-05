@@ -96,15 +96,15 @@ export default class Table1 extends React.Component<ITable1Props, ITable1State> 
                 <thead>
                     <tr className={`${styles.title}`}><th colSpan={fields.length}>{tableTitle}</th></tr>
                     <tr>
-                        {fields.map((field, fieldIndex) => <th className={getColumnClass(field.TypeDisplayName, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop)} key={fieldIndex} title={field.Description}>{getFieldTitle(field, this.props.items)}</th>)}
+                        {fields.map((field, fieldIndex) => <th className={getColumnClass(false, field.TypeDisplayName, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop)} key={fieldIndex} title={field.Description}>{getFieldTitle(field, this.props.items)}</th>)}
                     </tr>
                     <tr className={`${styles.fields}`} id="fields">
-                        {fields.map((field, fieldIndex) => <th className={getColumnClass(field.TypeDisplayName, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop)} key={fieldIndex}>{this.getFieldInput(field, filterField, filterValue)}</th>)}
+                        {fields.map((field, fieldIndex) => <th className={getColumnClass(false, field.TypeDisplayName, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop)} key={fieldIndex}>{this.getFieldInput(field, filterField, filterValue)}</th>)}
                     </tr>
                 </thead>
                 <tbody>
                     {items.map((item, itemIndex) => <tr key={itemIndex} id={item.Title}>{
-                        fields.map((field, fieldIndex) => <td className={getColumnClass(field.TypeDisplayName, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop, lookupColIndex)} key={fieldIndex} onClick={(e) => this.onClickHandler(e, fieldIndex, item, lookupColIndex)} dangerouslySetInnerHTML={{ __html: getFieldValue(item, field) }} />)
+                        fields.map((field, fieldIndex) => <td className={getColumnClass(true, field.TypeDisplayName, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop, lookupColIndex)} key={fieldIndex} onClick={(e) => this.onClickHandler(e, fieldIndex, item, lookupColIndex)} dangerouslySetInnerHTML={{ __html: getFieldValue(item, field) }} />)
                     }</tr>)}
                 </tbody>
             </table>

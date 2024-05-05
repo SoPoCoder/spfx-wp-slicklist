@@ -48,14 +48,16 @@ export function getTable2Item(lookupColumn: string | undefined, table1Item: ILis
 /* -----------------------------------------------------------------
     gets a table cells class based on column index and field type
 ----------------------------------------------------------------- */
-export function getColumnClass(fieldType: string, fieldIndex: number, tableVisColsMobile: number, tableVisColsTablet: number, tableVisColsDesktop: number, lookupColIndex?: number): string | undefined {
+export function getColumnClass(isRow: boolean, fieldType: string, fieldIndex: number, tableVisColsMobile: number, tableVisColsTablet: number, tableVisColsDesktop: number, lookupColIndex?: number): string | undefined {
     let className = undefined;
-    lookupColIndex = lookupColIndex || 0;
-    if (fieldIndex === 0 || fieldIndex === lookupColIndex) {
-        className = "pcursor"
-    }
-    if (fieldType === FieldTypes.Boolean) {
-        className = className ? className.concat(" ", "mark") : "mark";
+    if (isRow) {
+        lookupColIndex = lookupColIndex || 0;
+        if (fieldIndex === 0 || fieldIndex === lookupColIndex) {
+            className = "pcursor"
+        }
+        if (fieldType === FieldTypes.Boolean) {
+            className = className ? className.concat(" ", "mark") : "mark";
+        }
     }
     if (fieldIndex >= tableVisColsMobile) {
         if (fieldIndex >= tableVisColsTablet) {
