@@ -40,8 +40,18 @@ export default class Table2 extends React.Component<ITable2Props, ITable2State> 
         const { fields, items } = this.state;
 
         let currentUnit: string = "";
-        const getHeaderRows = (unit: string): React.ReactFragment => {
-            if (unit && unit !== currentUnit) {
+        const getHeaders = (tableTitle: string, itemIndex: number, unit: string): React.ReactFragment => {
+            // if Table2 orderByColumn1 is defined and is first row of table, insert a single header at the top of the table
+            if (!orderByColumn1 && itemIndex === 0) {
+                return (
+                    <>
+                        <tr className={`${styles.title}`}><th colSpan={fields.length}>{tableTitle}</th></tr>
+                        <tr>{fields.map((field, fieldIndex) => <th className={getColumnClass(false, field.TypeDisplayName, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop)} key={fieldIndex} title={field.Description}>{getFieldTitle(field, items)}</th>)}</tr>
+                    </>
+                )
+            }
+            // if Table2 orderByColumn1 is defined, generate headers for each unique orderBy unit
+            if (orderByColumn1 && unit && unit !== currentUnit) {
                 currentUnit = unit;
                 return (
                     <>
@@ -50,14 +60,13 @@ export default class Table2 extends React.Component<ITable2Props, ITable2State> 
                     </>
                 )
             }
-            return (<></>);
         }
         return (
             <table className={`${styles.buffer}`}>
                 <tbody>
                     {items.map((item, itemIndex) =>
                         <>
-                            {tableTitle && itemIndex === 0 ? <tr className={`${styles.title}`}><th colSpan={fields.length}>{tableTitle}</th></tr> : getHeaderRows(item[orderByColumn1])}
+                            {getHeaders(tableTitle, itemIndex, item[orderByColumn1])}
                             <tr key={itemIndex} id={item.Title} className={orderByColumn3 && item[orderByColumn3] ? `${styles.grouping2}` : undefined}>{
                                 fields.map((field, fieldIndex) => <td className={`pcursor ${getColumnClass(true, field.TypeDisplayName, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop)}`} key={fieldIndex} onClick={(e) => this.onClickHandler(item)} dangerouslySetInnerHTML={{ __html: getFieldValue(item, field) }} />)}
                             </tr>

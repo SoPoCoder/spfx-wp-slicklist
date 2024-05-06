@@ -53,10 +53,8 @@ export default class Slicklist extends React.Component<ISlickListProps, ISlickLi
                                 field.TypeDisplayName === FieldTypes.Choice ||
                                 field.TypeDisplayName === FieldTypes.Boolean ||
                                 field.TypeDisplayName === FieldTypes.Number ||
-                                field.TypeDisplayName === FieldTypes.DateTime) &&
-                            field.InternalName !== orderByColumn1 &&
-                            field.InternalName !== orderByColumn2 &&
-                            field.InternalName !== orderByColumn3
+                                field.TypeDisplayName === FieldTypes.DateTime
+                            ) && field.InternalName !== orderByColumn1
                         ) {
                             listFields.push(field);
                         }
