@@ -115,7 +115,7 @@ export function getFieldValue(item: IListItem | undefined, field: IFieldInfo, is
             if (isModalTable)
                 return `<a href='${fileRef}' target="_blank">${fileLeafRef}</a>`;
             else
-                return `<i class="${getIconClassName('PDF')}" title="${fileLeafRef}" />`;
+                return `<i class="${getIconClassName(getFileIcon(fileLeafRef))}" title="${fileLeafRef}" />`;
         }
         // if field value is a date, format it as a string
         if (field.TypeDisplayName === FieldTypes.DateTime) {
@@ -135,4 +135,28 @@ export function getFieldValue(item: IListItem | undefined, field: IFieldInfo, is
     }
     // for all other field value types, simply display value as string
     return strItem;
+}
+
+/* -----------------------------------------------------------------
+    recieves a filename and returns an Office UI Fabric Icon name
+----------------------------------------------------------------- */
+export function getFileIcon(fileName: string | undefined): string {
+    if (fileName) {
+        const fileExt = fileName.split('.').pop();
+        if (fileExt === "pdf")
+            return "PDF";
+        if (fileExt === "doc" || fileExt === "docx")
+            return "WordDocument";
+        if (fileExt === "xls" || fileExt === "xlsx")
+            return "ExcelDocument";
+        if (fileExt === "ppt" || fileExt === "pptx")
+            return "PowerPointDocument";
+        if (fileExt === "txt")
+            return "TextDocument";
+        if (fileExt === "png" || fileExt === "jpg" || fileExt === "gif" || fileExt === "jpeg")
+            return "PictureFill";
+        if (fileExt === "vsd" || fileExt === "vsdx")
+            return "VisioDocument";
+    }
+    return "Document";
 }
