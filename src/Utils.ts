@@ -88,16 +88,16 @@ export function getFieldTitle(field: IFieldInfo, items: Array<IListItem>): strin
         });
 
         //based on the longest value and the length of the field title, calculate how many spaces are required on both sides
-        if (longestFieldValue > field.Title.length) {
-            const spaceBufferLength = Math.ceil((longestFieldValue - field.Title.length) / 2);
+        if (longestFieldValue > field.InternalName.length) {
+            const spaceBufferLength = Math.ceil((longestFieldValue - field.InternalName.length) / 2);
             let spaceBuffer = "";
             for (let i = 0; i < spaceBufferLength; i++) {
                 spaceBuffer = spaceBuffer + "\u00A0 "; //note that this adds two spaces, one non-breaking and one normal
             }
-            return (spaceBuffer + field.Title + spaceBuffer);
+            return (spaceBuffer + field.InternalName + spaceBuffer);
         }
     }
-    return field.Title;
+    return field.InternalName;
 }
 
 /* -----------------------------------------------------------------
@@ -123,7 +123,10 @@ export function getFieldValue(item: IListItem | undefined, field: IFieldInfo, is
         }
         // if field value is a Yes/No boolean, display checkmark for True and nothing for false
         if (field.TypeDisplayName === FieldTypes.Boolean) {
-            return strItem ? "✓" : "";
+            if (isModalTable)
+                return strItem ? "Yes" : "No";
+            else
+                return strItem ? "✓" : "";
         }
         // if field is a single line string, check if any hyperlinks are present and linkify them
         if (field.TypeDisplayName === FieldTypes.Single) {
