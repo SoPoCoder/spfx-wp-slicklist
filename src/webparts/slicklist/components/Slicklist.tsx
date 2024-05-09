@@ -45,8 +45,7 @@ export default class Slicklist extends React.Component<ISlickListProps, ISlickLi
                 if (fields) {
                     // get all the non-hidden fields of the following types
                     fields.map((field: IFieldInfo) => {
-                        if (
-                            (
+                        if ((
                                 field.TypeDisplayName === FieldTypes.File ||
                                 field.TypeDisplayName === FieldTypes.Single ||
                                 field.TypeDisplayName === FieldTypes.Multiple ||
@@ -54,7 +53,7 @@ export default class Slicklist extends React.Component<ISlickListProps, ISlickLi
                                 field.TypeDisplayName === FieldTypes.Boolean ||
                                 field.TypeDisplayName === FieldTypes.Number ||
                                 field.TypeDisplayName === FieldTypes.DateTime
-                            ) && field.InternalName !== orderByColumn1
+                            ) && field.InternalName !== orderByColumn1 // this column will become headers so hide from table rows
                         ) {
                             listFields.push(field);
                         }

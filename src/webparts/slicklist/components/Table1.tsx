@@ -25,7 +25,7 @@ export default class Table1 extends React.Component<ITable1Props, ITable1State> 
         ) {
             this.setState({
                 fields: this.props.fields,
-                // items: this.props.items // uncomment to show rather than hide all items on load
+                items: filterItems(undefined, "", this.props.items)
             })
         }
         //if a field and value was selected, filter items and update state

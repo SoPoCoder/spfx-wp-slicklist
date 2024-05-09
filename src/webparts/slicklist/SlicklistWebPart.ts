@@ -321,7 +321,7 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
         if (this.properties.showTable2) {
             propertyPaneGroups.push(
                 {
-                    groupName: strings.Table2GroupName,
+                    groupName: strings.Table2AddPropsGroupName,
                     groupFields: [
                         PropertyPaneSlider('table2VisColsMobile', {
                             label: strings.Table2VisibleColsMobileFieldLabel,

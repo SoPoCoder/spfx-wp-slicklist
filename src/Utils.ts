@@ -1,6 +1,7 @@
 import { IFieldInfo } from "@pnp/sp/fields";
 import { FieldTypes, IListItem } from ".";
 import linkifyHtml from "linkify-html";
+import { getIconClassName } from "office-ui-fabric-react";
 
 /* -----------------------------------------------------------------
     filters an array of IListItem taking into account field type
@@ -55,7 +56,7 @@ export function getColumnClass(isRow: boolean, fieldType: string, fieldIndex: nu
         if (fieldIndex === 0 || fieldIndex === lookupColIndex) {
             className = "pcursor"
         }
-        if (fieldType === FieldTypes.Boolean) {
+        if (fieldType === FieldTypes.File || fieldType === FieldTypes.Boolean) {
             className = className ? className.concat(" ", "mark") : "mark";
         }
     }
@@ -76,7 +77,7 @@ export function getColumnClass(isRow: boolean, fieldType: string, fieldIndex: nu
 ----------------------------------------------------------------- */
 export function getFieldTitle(field: IFieldInfo, items: Array<IListItem>): string {
     //skip for multi-line fields which may include lengthy hidden markup (recommend leave these columns at end of table as their width will change with filtering)
-    if (field.TypeDisplayName !== FieldTypes.Multiple) {
+    if (field.TypeDisplayName !== FieldTypes.File && field.TypeDisplayName !== FieldTypes.Multiple) {
 
         //get the length in characters of the longest entry for the given field
         let longestFieldValue = 0;
@@ -103,15 +104,18 @@ export function getFieldTitle(field: IFieldInfo, items: Array<IListItem>): strin
     gets a table cells value and formats it based on field type
 ----------------------------------------------------------------- */
 export function getFieldValue(item: IListItem | undefined, field: IFieldInfo, isModalTable: boolean = false): string {
-    let strItem: string ="";
+    let strItem: string = "";
     if (item && field && item[field.InternalName]) {
         // get value for specified item and field
         strItem = item[field.InternalName];
         // if field value is a file, format it as a link to the file
-        if (field.TypeDisplayName === FieldTypes.File && isModalTable) {
+        if (field.TypeDisplayName === FieldTypes.File) {
             const fileLeafRef: string = item.FileLeafRef;
             const fileRef: string = item.FileRef;
-            return `<a href='${fileRef}' target="_blank">${fileLeafRef}</a>`; //TODO: display file icon instead of file name
+            if (isModalTable)
+                return `<a href='${fileRef}' target="_blank">${fileLeafRef}</a>`;
+            else
+                return `<i class="${getIconClassName('PDF')}" title="${fileLeafRef}" />`;
         }
         // if field value is a date, format it as a string
         if (field.TypeDisplayName === FieldTypes.DateTime) {
