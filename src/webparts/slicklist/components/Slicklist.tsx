@@ -60,7 +60,7 @@ export default class Slicklist extends React.Component<ISlickListProps, ISlickLi
                     });
                     // get all list items for Table1
                     if (tableNumber === 1)
-                        web.lists.getByTitle(listName).items.select("*","FileLeafRef","FileRef")().then((items) => {
+                        web.lists.getByTitle(listName).items.select("*","FileLeafRef","FileRef").getAll().then((items) => {
                             if (items) {
                                 items.map((item) => {
                                     listItems.push(item);
