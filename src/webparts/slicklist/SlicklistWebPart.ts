@@ -224,6 +224,7 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
             }).catch((error: Error) => { console.log(error) });
         } else if (propertyPath === "table1ListName") {
             await this._getColumnChoices(this.properties.table1SiteURL, this.properties.table1ListName, 1);
+            this.properties.lookupColumn = "";
         } else if (propertyPath === "table2ListName") {
             this._list2ColSelectOptions = [];
             this.properties.orderByColumn1 = "";
