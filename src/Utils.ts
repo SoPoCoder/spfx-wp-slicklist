@@ -1,5 +1,5 @@
 import { IFieldInfo } from "@pnp/sp/fields";
-import { FieldTypes, IListItem } from ".";
+import { FieldTypes, HyperLink, IListItem } from ".";
 import linkifyHtml from "linkify-html";
 import { getIconClassName } from "office-ui-fabric-react";
 
@@ -12,9 +12,9 @@ export function filterItems(filterField: IFieldInfo | undefined, filterValue: st
         filterValue = filterValue.toLowerCase();
         filteredItems = items.filter(item => {
             if (filterField) {
-                const itemValue = item[filterField.InternalName];
+                const itemValue = item[filterField.InternalName].toString();
                 if (filterField.TypeDisplayName === FieldTypes.Boolean) { // boolean types
-                    return itemValue.toString() === filterValue;
+                    return itemValue === filterValue;
                 }
                 if (itemValue && filterField.TypeDisplayName === FieldTypes.DateTime) { // date types
                     const itemValueFormatted = new Date(itemValue).toLocaleDateString('en-US', { timeZone: 'UTC' });
@@ -22,7 +22,7 @@ export function filterItems(filterField: IFieldInfo | undefined, filterValue: st
                     return itemValueFormatted === selectedValueFormatted;
                 }
                 if (itemValue) { // for all other types
-                    const fieldValue = itemValue.toString().toLowerCase();
+                    const fieldValue = itemValue.toLowerCase();
                     const start1Found = fieldValue.indexOf(filterValue) === 0;
                     const start2Found = fieldValue.indexOf(" " + filterValue) > -1;
                     return start1Found || start2Found;
@@ -107,11 +107,11 @@ export function getFieldValue(item: IListItem | undefined, field: IFieldInfo, is
     let strItem: string = "";
     if (item && field && item[field.InternalName]) {
         // get value for specified item and field
-        strItem = item[field.InternalName];
+        strItem = item[field.InternalName].toString();
         // if field value is a file, format it as a link to the file
         if (field.TypeDisplayName === FieldTypes.File) {
-            const fileLeafRef: string = item.FileLeafRef;
-            const fileRef: string = item.FileRef;
+            const fileLeafRef: string = item.FileLeafRef.toString();
+            const fileRef: string = item.FileRef.toString();
             if (isModalTable)
                 return `<a href="${fileRef}" target="_blank" data-interception="off">${fileLeafRef}</a>`;
             else
@@ -131,6 +131,11 @@ export function getFieldValue(item: IListItem | undefined, field: IFieldInfo, is
         // if field is a single line string, check if any hyperlinks are present and linkify them
         if (field.TypeDisplayName === FieldTypes.Single) {
             return strItem ? linkifyHtml(strItem, { defaultProtocol: "https", target: "_blank" }) : "";
+        }
+        // if field is a hyperlink, display as a hyperlink
+        if (field.TypeDisplayName === FieldTypes.Link) {
+            const hyperLink = item[field.InternalName] as HyperLink;
+            return hyperLink ? `<a href="${hyperLink.Url}" target="_blank" data-interception="off">${hyperLink.Description}</a>` : "";
         }
     }
     // for all other field value types, simply display value as string

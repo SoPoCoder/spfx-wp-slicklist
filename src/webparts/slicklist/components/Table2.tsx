@@ -1,6 +1,6 @@
 import * as React from 'react';
 import "@pnp/sp/lists";
-import { IListItem, ITable2Props, ITable2State } from '../../..';
+import { HyperLink, IListItem, ITable2Props, ITable2State } from '../../..';
 import { getColumnClass, getFieldTitle, getFieldValue } from '../../../Utils';
 import styles from './Slicklist.module.scss';
 import { IFieldInfo } from '@pnp/sp/fields';
@@ -40,7 +40,7 @@ export default class Table2 extends React.Component<ITable2Props, ITable2State> 
         const { fields, items } = this.state;
 
         let currentUnit: string = "";
-        const getHeaders = (tableTitle: string, itemIndex: number, unit: string): React.ReactFragment => {
+        const getHeaders = (tableTitle: string, itemIndex: number, unit: string | HyperLink): React.ReactFragment => {
             // if Table2 orderByColumn1 is defined and is first row of table, insert a single header at the top of the table
             if (!orderByColumn1 && itemIndex === 0) {
                 return (
@@ -52,7 +52,7 @@ export default class Table2 extends React.Component<ITable2Props, ITable2State> 
             }
             // if Table2 orderByColumn1 is defined, generate headers for each unique orderBy unit
             if (orderByColumn1 && unit && unit !== currentUnit) {
-                currentUnit = unit;
+                currentUnit = unit.toString();
                 return (
                     <>
                         <tr className={`${styles.title}`}><th colSpan={fields.length}><span className={`${styles.totop} pcursor`} onClick={() => this.props.onTopClick()}>&#9650; TOP</span>{unit}</th></tr>
@@ -67,7 +67,7 @@ export default class Table2 extends React.Component<ITable2Props, ITable2State> 
                     {items.map((item, itemIndex) =>
                         <>
                             {getHeaders(tableTitle, itemIndex, item[orderByColumn1])}
-                            <tr key={itemIndex} id={item.Title} className={orderByColumn3 && item[orderByColumn3] ? `${styles.grouping2}` : undefined}>{
+                            <tr key={itemIndex} id={item.Title ? item.Title.toString() : ""} className={orderByColumn3 && item[orderByColumn3] ? `${styles.grouping2}` : undefined}>{
                                 fields.map((field, fieldIndex) => <td className={`pcursor ${getColumnClass(true, field.TypeDisplayName, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop)}`} key={fieldIndex} onClick={(e) => this.onClickHandler(item)} dangerouslySetInnerHTML={{ __html: getFieldValue(item, field) }} />)}
                             </tr>
                         </>

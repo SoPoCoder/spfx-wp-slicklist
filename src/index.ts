@@ -15,7 +15,12 @@ export interface ISPList {
 }
 
 export interface IListItem {
-    [index: string]: string;
+    [index: string]: string | HyperLink
+}
+
+export type HyperLink = {
+    Description: string,
+    Url: string
 }
 
 export interface ITable {

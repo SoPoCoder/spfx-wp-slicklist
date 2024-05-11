@@ -57,7 +57,7 @@ export default class Table1 extends React.Component<ITable1Props, ITable1State> 
         if (field.TypeDisplayName === FieldTypes.Choice) {
             let choices: Array<string> = [];
             this.props.items.map((item: IListItem) => {
-                const newChoice: string | null = item[field.InternalName] ? item[field.InternalName] : null;
+                const newChoice: string | null = item[field.InternalName] ? item[field.InternalName].toString() : null;
                 if (newChoice && choices.indexOf(newChoice) < 0)
                     choices.push(newChoice);
             });
@@ -73,7 +73,8 @@ export default class Table1 extends React.Component<ITable1Props, ITable1State> 
         }
 
         // return a text type input in all other cases
-        return <input type="text" id={field.InternalName} name={field.InternalName} placeholder={"[ Enter " + field.Title + " ]"} onChange={(e) => { this.setState({ filterField: field, filterValue: e.target.value }) }} value={fieldValue} />
+        const watermark = field.TypeDisplayName === FieldTypes.File ? "[ Name ]" : "[ Enter " + field.Title + " ]";
+        return <input type="text" id={field.InternalName} name={field.InternalName} placeholder={watermark} onChange={(e) => { this.setState({ filterField: field, filterValue: e.target.value }) }} value={fieldValue} />
     }
 
     /* -----------------------------------------------------------------
@@ -103,7 +104,7 @@ export default class Table1 extends React.Component<ITable1Props, ITable1State> 
                     </tr>
                 </thead>
                 <tbody>
-                    {items.map((item, itemIndex) => <tr key={itemIndex} id={item.Title}>{
+                    {items.map((item, itemIndex) => <tr key={itemIndex} id={item.Title ? item.Title.toString() : ""}>{
                         fields.map((field, fieldIndex) => <td className={getColumnClass(true, field.TypeDisplayName, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop, lookupColIndex)} key={fieldIndex} onClick={(e) => this.onClickHandler(e, fieldIndex, item, lookupColIndex)} dangerouslySetInnerHTML={{ __html: getFieldValue(item, field) }} />)
                     }</tr>)}
                 </tbody>
