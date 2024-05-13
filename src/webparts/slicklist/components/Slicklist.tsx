@@ -4,6 +4,7 @@ import { SPFI } from "@pnp/sp";
 import { getSP } from '../../../utils/pnpjs-config';
 import { IFieldInfo } from '@pnp/sp/fields';
 import "@pnp/sp/lists";
+import { PnPClientStorage } from "@pnp/core";
 import { FieldTypes, IListItem, ISlickListProps, ISlickListState } from '../../..';
 import Table1 from './Table1';
 import { Web } from '@pnp/sp/webs';
@@ -15,6 +16,7 @@ import { getTable2Item } from '../../../Utils';
 export default class Slicklist extends React.Component<ISlickListProps, ISlickListState> {
 
     private _sp: SPFI;
+    private _storage = new PnPClientStorage();
 
     constructor(props: ISlickListProps) {
         super(props);
@@ -35,56 +37,103 @@ export default class Slicklist extends React.Component<ISlickListProps, ISlickLi
     /* -----------------------------------------------------------------
         gets fields/items from a SharePoint list based on url & name
     ----------------------------------------------------------------- */
-    private async getListData(siteURL: string, listName: string, tableNumber?: number): Promise<void> {
+    private async getListData(siteURL: string, listName: string, tableNumber: number, clearCache: boolean = false): Promise<void> {
         if (siteURL && listName) {
-            const { orderByColumn1, orderByColumn2, orderByColumn3 } = this.props
             const web = Web([this._sp.web, siteURL]);
-            const listFields: Array<IFieldInfo> = [];
-            const listItems: Array<IListItem> = [];
-            await web.lists.getByTitle(listName).fields.filter("ReadOnlyField eq false and Hidden eq false")().then((fields) => {
-                if (fields) {
-                    // get all the non-hidden fields of the following types
-                    fields.map((field: IFieldInfo) => {
-                        if ((
+            const listId = (await web.lists.getByTitle(listName)()).Id;
+            const fieldsStorageKey = listId + "-" + listName + "Table" + tableNumber + "Fields";
+            const itemsStorageKey = listId + "-" + listName + "Table" + tableNumber + "Items";
+            const cacheExpiration: Date = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours from now
+            if (clearCache) {
+                this._storage.local.delete(fieldsStorageKey);
+                this._storage.local.delete(itemsStorageKey);
+            }
+            Promise.all([
+                this.getListFields(siteURL, listName, tableNumber, fieldsStorageKey, cacheExpiration),
+                this.getListItems(siteURL, listName, tableNumber, itemsStorageKey, cacheExpiration)
+            ]).then((values) => {
+                if (values[0].length && values[1].length) {
+                    // update state with the values from local storage
+                    if (tableNumber === 1) {
+                        this.setState({ table1Fields: values[0], table1Items: values[1] });
+                    } else {
+                        this.setState({ table2Fields: values[0], table2Items: values[1] });
+                    }
+                }
+            }).catch((error: Error) => { throw error });
+        }
+    }
+
+    /* -----------------------------------------------------------------
+        gets fields from a SharePoint list based on url & name
+    ----------------------------------------------------------------- */
+    private async getListFields(siteURL: string, listName: string, tableNumber: number, fieldsStorageKey: string, cacheExpiration: Date): Promise<Array<IFieldInfo>> {
+        // check if array is already in local storage
+        let listFields: Array<IFieldInfo> = this._storage.local.get(fieldsStorageKey);
+        if (!listFields || !listFields.length) {
+            // if not fetch the array and store in local storage
+            if (siteURL && listName) {
+                listFields = [];
+                const web = Web([this._sp.web, siteURL]);
+                await web.lists.getByTitle(listName).fields.filter("ReadOnlyField eq false and Hidden eq false")().then((fields) => {
+                    if (fields) {
+                        // get all the non-hidden fields of the following types
+                        fields.map((field: IFieldInfo) => {
+                            if ((
                                 field.TypeDisplayName === FieldTypes.File ||
                                 field.TypeDisplayName === FieldTypes.Single ||
                                 field.TypeDisplayName === FieldTypes.Multiple ||
                                 field.TypeDisplayName === FieldTypes.Choice ||
                                 field.TypeDisplayName === FieldTypes.Boolean ||
                                 field.TypeDisplayName === FieldTypes.Number ||
-                                field.TypeDisplayName === FieldTypes.DateTime || 
+                                field.TypeDisplayName === FieldTypes.DateTime ||
                                 field.TypeDisplayName === FieldTypes.Link
-                            ) && field.InternalName !== orderByColumn1 // this column will become headers so hide from table rows
-                        ) {
-                            listFields.push(field);
-                        }
-                    });
-                    // get all list items for Table1
-                    if (tableNumber === 1)
-                        web.lists.getByTitle(listName).items.select("*","FileLeafRef","FileRef").getAll().then((items) => {
-                            if (items) {
-                                items.map((item) => {
-                                    listItems.push(item);
-                                })
-                                this.setState({ table1Fields: listFields, table1Items: listItems });
+                            ) && field.InternalName !== this.props.orderByColumn1 // this column will become headers so hide from table rows
+                            ) {
+                                listFields.push(field);
                             }
-                        }).catch((error: Error) => { throw error });
-                    // get all list items for Table2
-                    if (tableNumber === 2) {
-                        let items = web.lists.getByTitle(listName).items;
-                        items = orderByColumn1 ? items.orderBy(orderByColumn1) : items;
-                        items = orderByColumn2 ? items.orderBy(orderByColumn2) : items;
-                        items = orderByColumn3 ? items.orderBy(orderByColumn3, false) : items;
-                        items.getAll().then((result) => {
-                            result.map((item) => {
-                                listItems.push(item);
-                            })
-                            this.setState({ table2Fields: listFields, table2Items: listItems });
-                        }).catch((error: Error) => { throw error });
+                        });
+                        if (listFields.length) {
+                            this._storage.local.put(fieldsStorageKey, listFields, cacheExpiration);
+                        }
                     }
-                }
-            }).catch((error: Error) => { throw error });
+                }).catch((error: Error) => { return Promise.reject(error) });
+            }
         }
+        return Promise.resolve(listFields);
+    }
+
+    /* -----------------------------------------------------------------
+        gets items from a SharePoint list based on url & name
+    ----------------------------------------------------------------- */
+    private async getListItems(siteURL: string, listName: string, tableNumber: number, itemsStorageKey: string, cacheExpiration: Date): Promise<Array<IListItem>> {
+        // check if array is already in local storage
+        let listItems: Array<IListItem> = this._storage.local.get(itemsStorageKey);
+        if (!listItems || !listItems.length) {
+            // if not fetch the array and store in local storage
+            if (siteURL && listName) {
+                listItems = [];
+                const { orderByColumn1, orderByColumn2, orderByColumn3 } = this.props
+                const web = Web([this._sp.web, siteURL]);
+                let items = web.lists.getByTitle(listName).items.select("*", "FileLeafRef", "FileRef");
+                if (tableNumber === 1) {
+                    items = items.orderBy("Title");
+                } else {
+                    items = orderByColumn1 ? items.orderBy(orderByColumn1) : items;
+                    items = orderByColumn2 ? items.orderBy(orderByColumn2) : items;
+                    items = orderByColumn3 ? items.orderBy(orderByColumn3, false) : items;
+                }
+                await items.getAll().then((result) => {
+                    result.map((item) => {
+                        listItems.push(item);
+                    })
+                    if (listItems.length) {
+                        this._storage.local.put(itemsStorageKey, listItems, cacheExpiration);
+                    }
+                }).catch((error: Error) => { return Promise.reject(error) });
+            }
+        }
+        return Promise.resolve(listItems);
     }
 
     public componentDidUpdate(prevProps: ISlickListProps): void {
@@ -93,7 +142,8 @@ export default class Slicklist extends React.Component<ISlickListProps, ISlickLi
             prevProps.table1SiteURL !== this.props.table1SiteURL ||
             prevProps.table1ListName !== this.props.table1ListName
         ) {
-            this.getListData(this.props.table1SiteURL, this.props.table1ListName, 1).catch((error: Error) => { throw error });
+            
+            this.getListData(this.props.table1SiteURL, this.props.table1ListName, 1, true).catch((error: Error) => { throw error });
         }
 
         // check to see if Table2 properties changed and update if so
@@ -102,10 +152,10 @@ export default class Slicklist extends React.Component<ISlickListProps, ISlickLi
             prevProps.table2ListName !== this.props.table2ListName ||
             prevProps.orderByColumn1 !== this.props.orderByColumn1 ||
             prevProps.orderByColumn2 !== this.props.orderByColumn2 ||
-            prevProps.orderByColumn3 !== this.props.orderByColumn3 || 
+            prevProps.orderByColumn3 !== this.props.orderByColumn3 ||
             prevProps.showTable2 !== this.props.showTable2
         ) {
-            this.getListData(this.props.table2SiteURL, this.props.table2ListName, 2).catch((error: Error) => { throw error });
+            this.getListData(this.props.table2SiteURL, this.props.table2ListName, 2, true).catch((error: Error) => { throw error });
         }
     }
 

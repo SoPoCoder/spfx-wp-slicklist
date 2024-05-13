@@ -12,7 +12,7 @@ export function filterItems(filterField: IFieldInfo | undefined, filterValue: st
         filterValue = filterValue.toLowerCase();
         filteredItems = items.filter(item => {
             if (filterField) {
-                const itemValue = item[filterField.InternalName].toString();
+                const itemValue = item[filterField.InternalName] ? item[filterField.InternalName].toString() : "";
                 if (filterField.TypeDisplayName === FieldTypes.Boolean) { // boolean types
                     return itemValue === filterValue;
                 }
