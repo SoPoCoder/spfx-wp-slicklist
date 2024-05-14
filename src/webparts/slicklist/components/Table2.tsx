@@ -46,7 +46,7 @@ export default class Table2 extends React.Component<ITable2Props, ITable2State> 
                 return (
                     <>
                         <tr className={`${styles.title}`}><th colSpan={fields.length}>{tableTitle}</th></tr>
-                        <tr>{fields.map((field, fieldIndex) => <th className={getColumnClass(false, field.TypeDisplayName, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop)} key={fieldIndex} title={field.Description}>{getFieldTitle(field, items)}</th>)}</tr>
+                        <tr>{fields.map((field, fieldIndex) => <th className={getColumnClass(false, field, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop)} key={fieldIndex} title={field.Description}>{getFieldTitle(field, items)}</th>)}</tr>
                     </>
                 )
             }
@@ -56,19 +56,19 @@ export default class Table2 extends React.Component<ITable2Props, ITable2State> 
                 return (
                     <>
                         <tr className={`${styles.title}`}><th colSpan={fields.length}><span className={`${styles.totop} pcursor`} onClick={() => this.props.onTopClick()}>&#9650; TOP</span>{unit}</th></tr>
-                        <tr>{fields.map((field, fieldIndex) => <th className={getColumnClass(false, field.TypeDisplayName, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop)} key={fieldIndex} title={field.Description}>{getFieldTitle(field, items)}</th>)}</tr>
+                        <tr>{fields.map((field, fieldIndex) => <th className={getColumnClass(false, field, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop)} key={fieldIndex} title={field.Description}>{getFieldTitle(field, items)}</th>)}</tr>
                     </>
                 )
             }
         }
         return (
-            <table className={`${styles.buffer}`}>
+            <table>
                 <tbody>
                     {items.map((item, itemIndex) =>
                         <>
                             {getHeaders(tableTitle, itemIndex, item[orderByColumn1])}
                             <tr key={itemIndex} id={item.Title ? item.Title.toString() : ""} className={orderByColumn3 && item[orderByColumn3] ? `${styles.grouping2}` : undefined}>{
-                                fields.map((field, fieldIndex) => <td className={`pcursor ${getColumnClass(true, field.TypeDisplayName, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop)}`} key={fieldIndex} onClick={(e) => this.onClickHandler(item)} dangerouslySetInnerHTML={{ __html: getFieldValue(item, field) }} />)}
+                                fields.map((field, fieldIndex) => <td className={`pcursor ${getColumnClass(true, field, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop)}`} key={fieldIndex} onClick={(e) => this.onClickHandler(item)} dangerouslySetInnerHTML={{ __html: getFieldValue(item, field) }} />)}
                             </tr>
                         </>
                     )}

@@ -49,16 +49,16 @@ export function getTable2Item(lookupColumn: string | undefined, table1Item: ILis
 /* -----------------------------------------------------------------
     gets a table cells class based on column index and field type
 ----------------------------------------------------------------- */
-export function getColumnClass(isRow: boolean, fieldType: string, fieldIndex: number, tableVisColsMobile: number, tableVisColsTablet: number, tableVisColsDesktop: number, lookupColIndex?: number): string | undefined {
+export function getColumnClass(isRow: boolean, field: IFieldInfo, fieldIndex: number, tableVisColsMobile: number, tableVisColsTablet: number, tableVisColsDesktop: number, lookupColIndex?: number): string | undefined {
     let className = undefined;
     if (isRow) {
         lookupColIndex = lookupColIndex || 0;
-        if (fieldIndex === 0 || fieldIndex === lookupColIndex) {
+        if (field.InternalName === "Title" || fieldIndex === lookupColIndex) {
             className = "pcursor"
         }
-        if (fieldType === FieldTypes.File || fieldType === FieldTypes.Boolean) {
-            className = className ? className.concat(" ", "mark") : "mark";
-        }
+    }
+    if (field.TypeDisplayName === FieldTypes.File || field.TypeDisplayName === FieldTypes.Boolean) {
+        className = className ? className.concat(" ", "mark") : "mark";
     }
     if (fieldIndex >= tableVisColsMobile) {
         if (fieldIndex >= tableVisColsTablet) {
@@ -115,7 +115,7 @@ export function getFieldValue(item: IListItem | undefined, field: IFieldInfo, is
             if (isModalTable)
                 return `<a href="${fileRef}" target="_blank" data-interception="off">${fileLeafRef}</a>`;
             else
-                return `<i class="${getIconClassName(getFileIcon(fileLeafRef))}" title="${fileLeafRef}" />`;
+                return `<a href="${fileRef}" target="_blank" data-interception="off"><i class="${getIconClassName(getFileIcon(fileLeafRef))}" title="${fileLeafRef}" /></a>`;
         }
         // if field value is a date, format it as a string
         if (field.TypeDisplayName === FieldTypes.DateTime) {
@@ -162,6 +162,8 @@ export function getFileIcon(fileName: string | undefined): string {
             return "PictureFill";
         if (fileExt === "vsd" || fileExt === "vsdx")
             return "VisioDocument";
+        if (fileExt === "exe" || fileExt === "msi")
+            return "Product";
     }
     return "Document";
 }
