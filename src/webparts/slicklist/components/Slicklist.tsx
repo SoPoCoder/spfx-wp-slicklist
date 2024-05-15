@@ -88,8 +88,11 @@ export default class Slicklist extends React.Component<ISlickListProps, ISlickLi
                                 field.TypeDisplayName === FieldTypes.Number ||
                                 field.TypeDisplayName === FieldTypes.DateTime ||
                                 field.TypeDisplayName === FieldTypes.Link
-                            ) && field.InternalName !== this.props.orderByColumn1 // this column will become headers so hide from table rows
-                            ) {
+                            ) && (
+                                // these columns are for grouping the list only, so hide from table rows
+                                field.InternalName !== this.props.orderByColumn1 && 
+                                field.InternalName !== this.props.orderByColumn2
+                            )) {
                                 listFields.push(field);
                             }
                         });
@@ -113,7 +116,7 @@ export default class Slicklist extends React.Component<ISlickListProps, ISlickLi
             // if not fetch the array and store in local storage
             if (siteURL && listName) {
                 listItems = [];
-                const { orderByColumn1, orderByColumn2, orderByColumn3 } = this.props
+                const { orderByColumn1, orderByColumn2, orderByColumn3, orderByColumn4 } = this.props
                 const web = Web([this._sp.web, siteURL]);
                 let items = web.lists.getByTitle(listName).items.select("*", "FileLeafRef", "FileRef");
                 if (tableNumber === 1) {
@@ -121,7 +124,8 @@ export default class Slicklist extends React.Component<ISlickListProps, ISlickLi
                 } else {
                     items = orderByColumn1 ? items.orderBy(orderByColumn1) : items;
                     items = orderByColumn2 ? items.orderBy(orderByColumn2) : items;
-                    items = orderByColumn3 ? items.orderBy(orderByColumn3, false) : items;
+                    items = orderByColumn3 ? items.orderBy(orderByColumn3) : items;
+                    items = orderByColumn4 ? items.orderBy(orderByColumn4, false) : items;
                 }
                 await items.getAll().then((result) => {
                     result.map((item) => {
@@ -153,6 +157,7 @@ export default class Slicklist extends React.Component<ISlickListProps, ISlickLi
             prevProps.orderByColumn1 !== this.props.orderByColumn1 ||
             prevProps.orderByColumn2 !== this.props.orderByColumn2 ||
             prevProps.orderByColumn3 !== this.props.orderByColumn3 ||
+            prevProps.orderByColumn4 !== this.props.orderByColumn4 ||
             prevProps.showTable2 !== this.props.showTable2
         ) {
             this.getListData(this.props.table2SiteURL, this.props.table2ListName, 2, true).catch((error: Error) => { throw error });
@@ -190,6 +195,7 @@ export default class Slicklist extends React.Component<ISlickListProps, ISlickLi
             orderByColumn1={this.props.orderByColumn1}
             orderByColumn2={this.props.orderByColumn2}
             orderByColumn3={this.props.orderByColumn3}
+            orderByColumn4={this.props.orderByColumn4}
             onModalClick={(item: IListItem) => { this.setState({ clickedTable2Item: item }) }}
             onTopClick={this.props.onTopClick}
         />

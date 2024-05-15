@@ -97,14 +97,14 @@ export default class Table1 extends React.Component<ITable1Props, ITable1State> 
                 <thead>
                     <tr className={`${styles.title}`}><th colSpan={fields.length}>{tableTitle}</th></tr>
                     <tr>
-                        {fields.map((field, fieldIndex) => <th className={getColumnClass(false, field, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop)} key={fieldIndex} title={field.Title}>{getFieldTitle(field, this.props.items)}</th>)}
+                        {fields.map((field, fieldIndex) => <th className={getColumnClass(false, field, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop)} key={fieldIndex} title={field.Description ? field.Description : undefined}>{getFieldTitle(field, this.props.items)}</th>)}
                     </tr>
                     <tr className={`${styles.fields}`} id="fields">
                         {fields.map((field, fieldIndex) => <th className={getColumnClass(false, field, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop)} key={fieldIndex}>{this.getFieldInput(field, filterField, filterValue)}</th>)}
                     </tr>
                 </thead>
                 <tbody>
-                    {items.map((item, itemIndex) => <tr key={itemIndex} id={item.Title ? item.Title.toString() : ""}>{
+                    {items.map((item, itemIndex) => <tr key={itemIndex}>{
                         fields.map((field, fieldIndex) => <td className={getColumnClass(true, field, fieldIndex, tableVisColsMobile, tableVisColsTablet, tableVisColsDesktop, lookupColIndex)} key={fieldIndex} onClick={(e) => this.onClickHandler(e, fieldIndex, field.InternalName, item, lookupColIndex)} dangerouslySetInnerHTML={{ __html: getFieldValue(item, field) }} />)
                     }</tr>)}
                 </tbody>

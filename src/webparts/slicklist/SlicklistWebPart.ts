@@ -54,6 +54,7 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
                 orderByColumn1: this.properties.orderByColumn1,
                 orderByColumn2: this.properties.orderByColumn2,
                 orderByColumn3: this.properties.orderByColumn3,
+                orderByColumn4: this.properties.orderByColumn4,
                 onConfigure: () => { this.context.propertyPane.open(); },
                 onTopClick: () => { top.scrollIntoView({ behavior: 'smooth' }); },
                 onLookupClick: (value: string) => {
@@ -90,8 +91,9 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
     private _orderByColumn1DropdownDisabled = true;
     private _orderByColumn2DropdownDisabled = true;
     private _orderByColumn3DropdownDisabled = true;
+    private _orderByColumn4DropdownDisabled = true;
 
-    private async _getSiteNames(): Promise<boolean> {
+    private async getSiteNames(): Promise<boolean> {
         //const queryPath: string = "path:" + window.location.hostname + "/sites/ ";
         const results: SearchResults = await this._sp.search(<ISearchQuery>{
             Querytext: "contentclass:STS_Site",
@@ -109,7 +111,7 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
         return true;
     }
 
-    private async _getlistNames(siteURL: string): Promise<IPropertyPaneDropdownOption[]> {
+    private async getlistNames(siteURL: string): Promise<IPropertyPaneDropdownOption[]> {
         if (siteURL) {
             const response: SPHttpClientResponse = await this.context.spHttpClient.get(`${siteURL}/_api/web/lists?$filter=Hidden eq false`, SPHttpClient.configurations.v1);
             const lists: Promise<ISPLists> = await response.json();
@@ -123,7 +125,7 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
         return [];
     }
 
-    private async _getColumnChoices(siteURL: string, listName: string, tableNumber: number): Promise<boolean> {
+    private async getColumnChoices(siteURL: string, listName: string, tableNumber: number): Promise<boolean> {
 
         const web = Web([this._sp.web, siteURL]);
         const columns = await web.lists.getByTitle(listName).fields.filter("ReadOnlyField eq false and Hidden eq false")();
@@ -148,6 +150,7 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
                 this._orderByColumn1DropdownDisabled = false;
                 this._orderByColumn2DropdownDisabled = false;
                 this._orderByColumn3DropdownDisabled = false;
+                this._orderByColumn4DropdownDisabled = false;
                 return true;
             }
         }
@@ -170,25 +173,25 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
         this.properties.table2VisColsDesktop = this.properties.table2VisColsDesktop || 10;
         this.context.propertyPane.refresh();
 
-        this._getSiteNames().then((result1) => {
+        this.getSiteNames().then((result1) => {
             if (result1) {
                 this.context.propertyPane.refresh();
-                this._getlistNames(this.properties.table1SiteURL).then((result2) => {
+                this.getlistNames(this.properties.table1SiteURL).then((result2) => {
                     if (result2) {
                         this._list1SelectOptions = result2;
                         this._list1NameDropdownDisabled = false;
                         this.context.propertyPane.refresh();
                         if (this.properties.table1ListName) {
-                            this._getColumnChoices(this.properties.table1SiteURL, this.properties.table1ListName, 1).then((result3) => {
+                            this.getColumnChoices(this.properties.table1SiteURL, this.properties.table1ListName, 1).then((result3) => {
                                 if (result3) {
                                     this.context.propertyPane.refresh();
                                     if (this.properties.lookupColumn) {
-                                        this._getlistNames(this.properties.table2SiteURL).then((result4) => {
+                                        this.getlistNames(this.properties.table2SiteURL).then((result4) => {
                                             if (result4) {
                                                 this._list2SelectOptions = result4;
                                                 this._list2NameDropdownDisabled = false;
                                                 this.context.propertyPane.refresh();
-                                                this._getColumnChoices(this.properties.table2SiteURL, this.properties.table2ListName, 2).then((result5) => {
+                                                this.getColumnChoices(this.properties.table2SiteURL, this.properties.table2ListName, 2).then((result5) => {
                                                     if (result5) {
                                                         this.context.propertyPane.refresh();
                                                     }
@@ -209,21 +212,21 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
     protected async onPropertyPaneFieldChanged(propertyPath: string, oldValue: string | undefined, newValue: string | undefined): Promise<void> {
 
         if (propertyPath === "table1SiteURL") {
-            await this._getlistNames(this.properties.table1SiteURL).then((result) => {
+            await this.getlistNames(this.properties.table1SiteURL).then((result) => {
                 if (result) {
                     this._list1SelectOptions = result;
                     this._list1NameDropdownDisabled = false;
                 }
             }).catch((error: Error) => { console.log(error) });
         } else if (propertyPath === "table2SiteURL" || propertyPath === "lookupColumn") {
-            await this._getlistNames(this.properties.table2SiteURL).then((result) => {
+            await this.getlistNames(this.properties.table2SiteURL).then((result) => {
                 if (result) {
                     this._list2SelectOptions = result;
                     this._list2NameDropdownDisabled = false;
                 }
             }).catch((error: Error) => { console.log(error) });
         } else if (propertyPath === "table1ListName") {
-            await this._getColumnChoices(this.properties.table1SiteURL, this.properties.table1ListName, 1);
+            await this.getColumnChoices(this.properties.table1SiteURL, this.properties.table1ListName, 1);
             this.properties.lookupColumn = "";
         } else if (propertyPath === "table2ListName") {
             this._list2ColSelectOptions = [];
@@ -233,7 +236,8 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
             this._orderByColumn1DropdownDisabled = true;
             this._orderByColumn2DropdownDisabled = true;
             this._orderByColumn3DropdownDisabled = true;
-            await this._getColumnChoices(this.properties.table2SiteURL, this.properties.table2ListName, 2);
+            this._orderByColumn4DropdownDisabled = true;
+            await this.getColumnChoices(this.properties.table2SiteURL, this.properties.table2ListName, 2);
         } else {
             super.onPropertyPaneFieldChanged(propertyPath, oldValue, newValue);
         }
@@ -359,6 +363,12 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
                             options: this._list2ColSelectOptions,
                             selectedKey: this.properties.orderByColumn3,
                             disabled: this._orderByColumn3DropdownDisabled
+                        }),
+                        PropertyPaneDropdown('orderByColumn4', {
+                            label: strings.Table2OrderByColumn4FieldLabel,
+                            options: this._list2ColSelectOptions,
+                            selectedKey: this.properties.orderByColumn4,
+                            disabled: this._orderByColumn4DropdownDisabled
                         })
                     ]
                 }

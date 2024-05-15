@@ -18,8 +18,9 @@ define([], function () {
         "Table2VisibleColsMobileFieldLabel": "Visible Columns (Mobile)",
         "Table2VisibleColsTabletFieldLabel": "Visible Columns (Tablet)",
         "Table2VisibleColsDesktopFieldLabel": "Visible Columns (Desktop)",
-        "Table2OrderByColumn1FieldLabel": "Group By",
-        "Table2OrderByColumn2FieldLabel": "Order By",
-        "Table2OrderByColumn3FieldLabel": "Order By Parent",
+        "Table2OrderByColumn1FieldLabel": "Group By 1",
+        "Table2OrderByColumn2FieldLabel": "Group By 2",
+        "Table2OrderByColumn3FieldLabel": "Order By 1",
+        "Table2OrderByColumn4FieldLabel": "Order By 2"
     }
 });

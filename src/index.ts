@@ -68,6 +68,7 @@ export interface ISlicklistWebPartProps {
     orderByColumn1: string;
     orderByColumn2: string;
     orderByColumn3: string;
+    orderByColumn4: string;
 }
 
 /*-----------------------------------------------------
@@ -94,6 +95,7 @@ export interface ISlickListProps {
     orderByColumn1: string;
     orderByColumn2: string;
     orderByColumn3: string;
+    orderByColumn4: string;
     // callback functions
     onConfigure: () => void;
     onTopClick: () => void;
@@ -135,6 +137,7 @@ export interface ITable2Props extends ITable {
     orderByColumn1: string;
     orderByColumn2: string;
     orderByColumn3: string;
+    orderByColumn4: string;
     onModalClick: (item: IListItem) => void;
     onTopClick: () => void;
 }

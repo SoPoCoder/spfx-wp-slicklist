@@ -20,6 +20,7 @@ declare interface ISlicklistWebPartStrings {
     Table2OrderByColumn1FieldLabel: string;
     Table2OrderByColumn2FieldLabel: string;
     Table2OrderByColumn3FieldLabel: string;
+    Table2OrderByColumn4FieldLabel: string;
 }
 
 declare module 'SlicklistWebPartStrings' {

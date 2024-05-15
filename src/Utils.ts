@@ -76,16 +76,19 @@ export function getColumnClass(isRow: boolean, field: IFieldInfo, fieldIndex: nu
     gets a columns title and formats it based on longest value
 ----------------------------------------------------------------- */
 export function getFieldTitle(field: IFieldInfo, items: Array<IListItem>): string {
-    //skip for multi-line fields which may include lengthy hidden markup (recommend leave these columns at end of table as their width will change with filtering)
-    if (field.TypeDisplayName !== FieldTypes.File && field.TypeDisplayName !== FieldTypes.Multiple) {
+    if (field.TypeDisplayName !== FieldTypes.File) {
 
         //get the length in characters of the longest entry for the given field
         let longestFieldValue = 0;
-        items.map((item: IListItem) => {
-            if (item[field.InternalName])
-                if (item[field.InternalName].toString().length > longestFieldValue)
-                    longestFieldValue = item[field.InternalName].toString().length;
-        });
+        if (field.TypeDisplayName === FieldTypes.Multiple) {
+            longestFieldValue = 34; // set Multi-line text column with to 34 since that is truncated to 32
+        } else {
+            items.map((item: IListItem) => {
+                if (item[field.InternalName])
+                    if (item[field.InternalName].toString().length > longestFieldValue)
+                        longestFieldValue = item[field.InternalName].toString().length;
+            });
+        }
 
         //based on the longest value and the length of the field title, calculate how many spaces are required on both sides
         if (longestFieldValue > field.Title.length) {
@@ -131,6 +134,11 @@ export function getFieldValue(item: IListItem | undefined, field: IFieldInfo, is
         // if field is a single line string, check if any hyperlinks are present and linkify them
         if (field.TypeDisplayName === FieldTypes.Single) {
             return strItem ? linkifyHtml(strItem, { defaultProtocol: "https", target: "_blank" }) : "";
+        }
+        // if field is a multi-line string, check if length is more than 30 characters and truncate with tooltip for list only
+        if (field.TypeDisplayName === FieldTypes.Multiple) {
+            if (!isModalTable && strItem.length > 30)
+                return `<span title="${strItem}">${strItem.substring(0, 29) + "..."}</span>`;
         }
         // if field is a hyperlink, display as a hyperlink
         if (field.TypeDisplayName === FieldTypes.Link) {
