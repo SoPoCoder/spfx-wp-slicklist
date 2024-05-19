@@ -50,7 +50,7 @@ export default class Table1 extends React.Component<ITable1Props, ITable1State> 
 
         // return a select menu with Yes, No and no selection (default) if column type is of type Yes/No (Boolean)
         if (field.TypeDisplayName === FieldTypes.Boolean) {
-            return <select id={field.InternalName} name={field.InternalName} onChange={(e) => { this.setState({ filterField: field, filterValue: e.target.value }) }} value={fieldValue} ><option value="">―</option><option value='true'>Yes</option><option value='false'>No</option></select>
+            return <select id={field.InternalName} name={field.InternalName} onChange={(e) => { this.setState({ filterField: field, filterValue: e.target.value }) }} value={fieldValue} ><option value="―">―</option><option value='true'>Yes</option><option value='false'>No</option></select>
         }
 
         // return a select menu with unique choices for that column plus no selection (default) if column is of type Choice

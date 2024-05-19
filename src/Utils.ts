@@ -12,17 +12,18 @@ export function filterItems(filterField: IFieldInfo | undefined, filterValue: st
         filterValue = filterValue.toLowerCase();
         filteredItems = items.filter(item => {
             if (filterField) {
-                const itemValue = item[filterField.InternalName] ? item[filterField.InternalName].toString() : "";
+                let itemValue = item[filterField.InternalName];
                 if (filterField.TypeDisplayName === FieldTypes.Boolean) { // boolean types
+                    itemValue = itemValue ? "true" : "false";
                     return itemValue === filterValue;
                 }
                 if (itemValue && filterField.TypeDisplayName === FieldTypes.DateTime) { // date types
-                    const itemValueFormatted = new Date(itemValue).toLocaleDateString('en-US', { timeZone: 'UTC' });
+                    const itemValueFormatted = new Date(itemValue.toString()).toLocaleDateString('en-US', { timeZone: 'UTC' });
                     const selectedValueFormatted = new Date(filterValue).toLocaleDateString('en-US', { timeZone: 'UTC' });
                     return itemValueFormatted === selectedValueFormatted;
                 }
                 if (itemValue) { // for all other types
-                    const fieldValue = itemValue.toLowerCase();
+                    const fieldValue = itemValue.toString().toLowerCase();
                     const start1Found = fieldValue.indexOf(filterValue) === 0;
                     const start2Found = fieldValue.indexOf(" " + filterValue) > -1;
                     return start1Found || start2Found;
@@ -107,10 +108,10 @@ export function getFieldTitle(field: IFieldInfo, items: Array<IListItem>): strin
     gets a table cells value and formats it based on field type
 ----------------------------------------------------------------- */
 export function getFieldValue(item: IListItem | undefined, field: IFieldInfo, isModalTable: boolean = false): string {
-    let strItem: string = "";
+    let strItem = undefined;
     if (item && field && item[field.InternalName]) {
         // get value for specified item and field
-        strItem = item[field.InternalName].toString();
+        strItem = item[field.InternalName];
         // if field value is a file, format it as a link to the file
         if (field.TypeDisplayName === FieldTypes.File) {
             const fileLeafRef: string = item.FileLeafRef.toString();
@@ -121,8 +122,8 @@ export function getFieldValue(item: IListItem | undefined, field: IFieldInfo, is
                 return `<a href="${fileRef}" target="_blank" data-interception="off"><i class="${getIconClassName(getFileIcon(fileLeafRef))}" title="${fileLeafRef}" /></a>`;
         }
         // if field value is a date, format it as a string
-        if (field.TypeDisplayName === FieldTypes.DateTime) {
-            return new Date(strItem).toLocaleDateString('en-US', { timeZone: 'UTC' });
+        if (field.TypeDisplayName === FieldTypes.DateTime && strItem) {
+            return new Date(strItem.toString()).toLocaleDateString('en-US', { timeZone: 'UTC' });
         }
         // if field value is a Yes/No boolean, display checkmark for True and nothing for false
         if (field.TypeDisplayName === FieldTypes.Boolean) {
@@ -132,13 +133,13 @@ export function getFieldValue(item: IListItem | undefined, field: IFieldInfo, is
                 return strItem ? "✓" : "";
         }
         // if field is a single line string, check if any hyperlinks are present and linkify them
-        if (field.TypeDisplayName === FieldTypes.Single) {
-            return strItem ? linkifyHtml(strItem, { defaultProtocol: "https", target: "_blank" }) : "";
+        if (field.TypeDisplayName === FieldTypes.Single && strItem) {
+            return strItem ? linkifyHtml(strItem.toString(), { defaultProtocol: "https", target: "_blank" }) : "";
         }
         // if field is a multi-line string, check if length is more than 30 characters and truncate with tooltip for list only
-        if (field.TypeDisplayName === FieldTypes.Multiple) {
-            if (!isModalTable && strItem.length > 30)
-                return `<span title="${strItem}">${strItem.substring(0, 29) + "..."}</span>`;
+        if (field.TypeDisplayName === FieldTypes.Multiple && strItem) {
+            if (!isModalTable && strItem.toString().length > 30)
+                return `<span title="${strItem}">${strItem.toString().substring(0, 29) + "..."}</span>`;
         }
         // if field is a hyperlink, display as a hyperlink
         if (field.TypeDisplayName === FieldTypes.Link) {
@@ -147,7 +148,7 @@ export function getFieldValue(item: IListItem | undefined, field: IFieldInfo, is
         }
     }
     // for all other field value types, simply display value as string
-    return strItem;
+    return strItem ? strItem.toString() : "";
 }
 
 /* -----------------------------------------------------------------

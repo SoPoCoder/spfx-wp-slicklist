@@ -125,36 +125,99 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
         return [];
     }
 
-    private async getColumnChoices(siteURL: string, listName: string, tableNumber: number): Promise<boolean> {
-
+    private async getColumnChoices(siteURL: string, listName: string): Promise<IPropertyPaneDropdownOption[]> {
+        const selectOptions: IPropertyPaneDropdownOption[] = [];
         const web = Web([this._sp.web, siteURL]);
         const columns = await web.lists.getByTitle(listName).fields.filter("ReadOnlyField eq false and Hidden eq false")();
         if (columns.length > 0) {
-            if (tableNumber === 1) {
-                this._list1ColSelectOptions = columns.map((column: IFieldInfo) => {
-                    return { key: column.InternalName, text: column.Title };
-                });
-                this._list1ColSelectOptions.unshift({ key: "", text: "" });
-                this._lookupColumnDropdownDisabled = false;
-                return true;
+            columns.map((column: IFieldInfo) => {
+                if (column.Title.trim().length > 0) {
+                    selectOptions.push({ key: column.InternalName, text: column.Title });
+                }
+            });
+            selectOptions.unshift({ key: "", text: "" }); // add unselected option to the top of the list
+            return selectOptions;
+        }
+        return selectOptions;
+    }
+
+    // the following set of functions chain together to set or reset property panel fields
+    private setResetTable1ListName(reset:boolean = false): void {
+        this.getlistNames(this.properties.table1SiteURL).then((result: IPropertyPaneDropdownOption[]) => {
+            if (reset) {
+                this._list1SelectOptions = [];
+                this._list1NameDropdownDisabled = true;
             }
-            if (tableNumber === 2) {
-                const selectOptions: IPropertyPaneDropdownOption[] = [];
-                columns.map((column: IFieldInfo) => {
-                    if (column.Title.trim().length > 0) {
-                        selectOptions.push({ key: column.InternalName, text: column.Title });
-                    }
-                });
-                this._list2ColSelectOptions = selectOptions;
-                this._list2ColSelectOptions.unshift({ key: "", text: "" });
+            if (result) {
+                this._list1SelectOptions = result;
+                this._list1NameDropdownDisabled = false;
+                this.context.propertyPane.refresh();
+                this.setResetLookupColumn(reset);
+            }
+        }).catch((error: Error) => { console.log(error) });
+    }
+    private setResetLookupColumn(reset:boolean = false): void {
+        this.getColumnChoices(this.properties.table1SiteURL, this.properties.table1ListName).then((result: IPropertyPaneDropdownOption[]) => {
+            if (reset) {
+                this.properties.lookupColumn = "";
+                this._list1ColSelectOptions = [];
+                this._lookupColumnDropdownDisabled = true;
+            }
+            if (result) {
+                this._list1ColSelectOptions = result;
+                this._lookupColumnDropdownDisabled = false;
+                this.context.propertyPane.refresh();
+                this.setResetTable2SiteURL(reset);
+            }
+        }).catch((error: Error) => { console.log(error) });
+    }
+    private setResetTable2SiteURL(reset:boolean = false): void {
+        this.properties.table2SiteURL = "";
+        this.setResetTable2ListName(reset);
+    }
+    private setResetTable2ListName(reset:boolean = false): void {
+        this.getlistNames(this.properties.table2SiteURL).then((result: IPropertyPaneDropdownOption[]) => {
+            if (reset) {
+                this.properties.table2ListName = "";
+                this._list2SelectOptions = [];
+                this._list2NameDropdownDisabled = true;
+            }
+            if (result) {
+                this._list2SelectOptions = result;
+                this._list2NameDropdownDisabled = false;
+                this.context.propertyPane.refresh();
+                this.setResetShowTable2(reset);
+            }
+        }).catch((error: Error) => { console.log(error) });
+    }
+    private setResetShowTable2(reset:boolean = false): void {
+        if (reset) {
+            this.properties.showTable2 = false;
+        }
+        this.setResetTable2Props(reset);
+    }
+    private setResetTable2Props(reset:boolean = false): void {
+        this.getColumnChoices(this.properties.table2SiteURL, this.properties.table2ListName).then((result: IPropertyPaneDropdownOption[]) => {
+            if (reset) {
+                this.properties.orderByColumn1 = "";
+                this.properties.orderByColumn2 = "";
+                this.properties.orderByColumn3 = "";
+                this.properties.orderByColumn4 = "";
+                this._list2ColSelectOptions = [];
+                this._orderByColumn1DropdownDisabled = true;
+                this._orderByColumn2DropdownDisabled = true;
+                this._orderByColumn3DropdownDisabled = true;
+                this._orderByColumn4DropdownDisabled = true;
+            }
+            if (result) {
+                this._list2ColSelectOptions = result;
                 this._orderByColumn1DropdownDisabled = false;
                 this._orderByColumn2DropdownDisabled = false;
                 this._orderByColumn3DropdownDisabled = false;
                 this._orderByColumn4DropdownDisabled = false;
-                return true;
+                this.context.propertyPane.refresh();
             }
-        }
-        return false;
+        }).catch((error: Error) => { console.log(error) });
     }
 
     // fired when the properties panel is opened
@@ -173,71 +236,30 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
         this.properties.table2VisColsDesktop = this.properties.table2VisColsDesktop || 10;
         this.context.propertyPane.refresh();
 
-        this.getSiteNames().then((result1) => {
-            if (result1) {
+        this.getSiteNames().then((gotSites) => {
+            if (gotSites) {
+                this.setResetTable1ListName();
                 this.context.propertyPane.refresh();
-                this.getlistNames(this.properties.table1SiteURL).then((result2) => {
-                    if (result2) {
-                        this._list1SelectOptions = result2;
-                        this._list1NameDropdownDisabled = false;
-                        this.context.propertyPane.refresh();
-                        if (this.properties.table1ListName) {
-                            this.getColumnChoices(this.properties.table1SiteURL, this.properties.table1ListName, 1).then((result3) => {
-                                if (result3) {
-                                    this.context.propertyPane.refresh();
-                                    if (this.properties.lookupColumn) {
-                                        this.getlistNames(this.properties.table2SiteURL).then((result4) => {
-                                            if (result4) {
-                                                this._list2SelectOptions = result4;
-                                                this._list2NameDropdownDisabled = false;
-                                                this.context.propertyPane.refresh();
-                                                this.getColumnChoices(this.properties.table2SiteURL, this.properties.table2ListName, 2).then((result5) => {
-                                                    if (result5) {
-                                                        this.context.propertyPane.refresh();
-                                                    }
-                                                }).catch((error: Error) => { console.log(error) });
-                                            }
-                                        }).catch((error: Error) => { console.log(error) });
-                                    }
-                                }
-                            }).catch((error: Error) => { console.log(error) });
-                        }
-                    }
-                }).catch((error: Error) => { console.log(error) });
             }
-        }).catch((error: Error) => { console.log(error) })
+        }).catch((error: Error) => { console.log(error) });
+
     }
 
-    // fired when the properties panel is changed (see https://learn.microsoft.com/en-us/sharepoint/dev/spfx/web-parts/guidance/use-cascading-dropdowns-in-web-part-properties)
+    // fired when the properties panel is changed
     protected async onPropertyPaneFieldChanged(propertyPath: string, oldValue: string | undefined, newValue: string | undefined): Promise<void> {
-
+        
         if (propertyPath === "table1SiteURL") {
-            await this.getlistNames(this.properties.table1SiteURL).then((result) => {
-                if (result) {
-                    this._list1SelectOptions = result;
-                    this._list1NameDropdownDisabled = false;
-                }
-            }).catch((error: Error) => { console.log(error) });
-        } else if (propertyPath === "table2SiteURL" || propertyPath === "lookupColumn") {
-            await this.getlistNames(this.properties.table2SiteURL).then((result) => {
-                if (result) {
-                    this._list2SelectOptions = result;
-                    this._list2NameDropdownDisabled = false;
-                }
-            }).catch((error: Error) => { console.log(error) });
+            this.setResetTable1ListName(true);
         } else if (propertyPath === "table1ListName") {
-            await this.getColumnChoices(this.properties.table1SiteURL, this.properties.table1ListName, 1);
-            this.properties.lookupColumn = "";
+            this.setResetLookupColumn(true);
+        } else if (propertyPath === "lookupColumn") {
+            this.setResetTable2SiteURL(true);
+        } else if (propertyPath === "table2SiteURL") {
+            this.setResetTable2ListName(true);
         } else if (propertyPath === "table2ListName") {
-            this._list2ColSelectOptions = [];
-            this.properties.orderByColumn1 = "";
-            this.properties.orderByColumn2 = "";
-            this.properties.orderByColumn3 = "";
-            this._orderByColumn1DropdownDisabled = true;
-            this._orderByColumn2DropdownDisabled = true;
-            this._orderByColumn3DropdownDisabled = true;
-            this._orderByColumn4DropdownDisabled = true;
-            await this.getColumnChoices(this.properties.table2SiteURL, this.properties.table2ListName, 2);
+            this.setResetShowTable2(true);
+        } else if (propertyPath === "showTable2") {
+            this.setResetTable2Props(true);
         } else {
             super.onPropertyPaneFieldChanged(propertyPath, oldValue, newValue);
         }
@@ -323,7 +345,7 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
             )
         }
         
-        if (this.properties.showTable2) {
+        if (this.properties.lookupColumn && this.properties.showTable2) {
             propertyPaneGroups.push(
                 {
                     groupName: strings.Table2AddPropsGroupName,
