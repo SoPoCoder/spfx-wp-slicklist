@@ -7,8 +7,7 @@ import {
     IPropertyPaneGroup,
     PropertyPaneCheckbox,
     PropertyPaneDropdown,
-    PropertyPaneSlider,
-    PropertyPaneTextField
+    PropertyPaneSlider
 } from "@microsoft/sp-property-pane";
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { SPFI } from "@pnp/sp";
@@ -251,12 +250,16 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
         if (propertyPath === "table1SiteURL") {
             this.setResetTable1ListName(true);
         } else if (propertyPath === "table1ListName") {
+            if (newValue && newValue !== oldValue)
+                this.properties.table1Title = newValue;
             this.setResetLookupColumn(true);
         } else if (propertyPath === "lookupColumn") {
             this.setResetTable2SiteURL(true);
         } else if (propertyPath === "table2SiteURL") {
             this.setResetTable2ListName(true);
         } else if (propertyPath === "table2ListName") {
+            if (newValue && newValue !== oldValue)
+                this.properties.table2Title = newValue;
             this.setResetShowTable2(true);
         } else if (propertyPath === "showTable2") {
             this.setResetTable2Props(true);
@@ -273,14 +276,12 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
             {
                 groupName: strings.Table1GroupName,
                 groupFields: [
-                    PropertyPaneTextField('table1Title', {
-                        label: strings.Table1TitleFieldLabel,
-                    }),
                     PropertyPaneDropdown('table1SiteURL', {
                         label: strings.Table1SiteNameFieldLabel,
                         options: this._siteSelectOptions,
                         selectedKey: this.properties.table1SiteURL,
                         disabled: this._siteNameDropdownDisabled,
+                        
                     }),
                     PropertyPaneDropdown('table1ListName', {
                         label: strings.Table1ListNameFieldLabel,
@@ -321,9 +322,6 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
                 {
                     groupName: strings.Table2GroupName,
                     groupFields: [
-                        PropertyPaneTextField('table2Title', {
-                            label: strings.Table2TitleFieldLabel,
-                        }),
                         PropertyPaneDropdown('table2SiteURL', {
                             label: strings.Table2SiteNameFieldLabel,
                             options: this._siteSelectOptions,
