@@ -171,7 +171,8 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
         }).catch((error: Error) => { console.log(error) });
     }
     private setResetTable2SiteURL(reset:boolean = false): void {
-        this.properties.table2SiteURL = "";
+        if (reset)
+            this.properties.table2SiteURL = "";
         this.setResetTable2ListName(reset);
     }
     private setResetTable2ListName(reset:boolean = false): void {
