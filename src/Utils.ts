@@ -109,7 +109,7 @@ export function getFieldTitle(field: IFieldInfo, items: Array<IListItem>): strin
 ----------------------------------------------------------------- */
 export function getFieldValue(item: IListItem | undefined, field: IFieldInfo, isModalTable: boolean = false): string {
     let strItem = undefined;
-    if (item && field && item[field.InternalName]) {
+    if (item && field) {
         // get value for specified item and field
         strItem = item[field.InternalName];
         // if field value is a file, format it as a link to the file
