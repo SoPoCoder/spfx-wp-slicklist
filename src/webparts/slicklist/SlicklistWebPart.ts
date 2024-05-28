@@ -172,7 +172,7 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
     }
     private setResetTable2SiteURL(reset:boolean = false): void {
         if (reset)
-            this.properties.table2SiteURL = "";
+            this.properties.table2SiteURL = this.context.pageContext.web.absoluteUrl;
         this.setResetTable2ListName(reset);
     }
     private setResetTable2ListName(reset:boolean = false): void {
@@ -228,12 +228,12 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
         if (this.properties.table2SiteURL.trim().length < 1) {
             this.properties.table2SiteURL = this.context.pageContext.web.absoluteUrl;
         }
-        this.properties.table1VisColsMobile = this.properties.table1VisColsMobile || 5;
-        this.properties.table1VisColsTablet = this.properties.table1VisColsTablet || 8;
-        this.properties.table1VisColsDesktop = this.properties.table1VisColsDesktop || 10;
-        this.properties.table2VisColsMobile = this.properties.table2VisColsMobile || 5;
-        this.properties.table2VisColsTablet = this.properties.table2VisColsTablet || 8;
-        this.properties.table2VisColsDesktop = this.properties.table2VisColsDesktop || 10;
+        this.properties.table1VisColsMobile = this.properties.table1VisColsMobile || 2;
+        this.properties.table1VisColsTablet = this.properties.table1VisColsTablet || 5;
+        this.properties.table1VisColsDesktop = this.properties.table1VisColsDesktop || 7;
+        this.properties.table2VisColsMobile = this.properties.table2VisColsMobile || 2;
+        this.properties.table2VisColsTablet = this.properties.table2VisColsTablet || 5;
+        this.properties.table2VisColsDesktop = this.properties.table2VisColsDesktop || 7;
         this.context.propertyPane.refresh();
 
         this.getSiteNames().then((gotSites) => {
