@@ -137,8 +137,8 @@ export function getFieldValue(item: IListItem | undefined, field: IFieldInfo, is
             return strItem ? linkifyHtml(strItem.toString(), { defaultProtocol: "https", target: "_blank" }) : "";
         }
         // if field is a multi-line string, check if length is more than 30 characters and truncate with tooltip for list only
-        if (field.TypeDisplayName === FieldTypes.Multiple && strItem) {
-            if (!isModalTable && strItem.toString().length > 30)
+        if (field.TypeDisplayName === FieldTypes.Multiple && !isModalTable && strItem) {
+            if (strItem.toString().substring(0,1) !== "<" && strItem.toString().length > 30)
                 return `<span title="${strItem}">${strItem.toString().substring(0, 29) + "..."}</span>`;
         }
         // if field is a hyperlink, display as a hyperlink

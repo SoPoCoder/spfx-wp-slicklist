@@ -61,17 +61,11 @@ $themeWhite: '[theme:white, default:#fff]';
         background-blend-mode: multiply;
     }
 
-    tfoot th {
-        font-size: 1.2em;
-        background-color: $themeDark;
-        padding: 8px;
-        text-align: left;
-    }
-
-    .title th {
+    tfoot th, .title th {
         background-color: $themeDark;
         font-size: 1.2em;
         padding: 8px;
+        position: relative;
     }
 
     .fields th {
@@ -118,7 +112,7 @@ $themeWhite: '[theme:white, default:#fff]';
         position: absolute;
         white-space: nowrap;
         left: 0;
-        padding-left: 20px;
+        padding-left: 10px;
     }
 
 }
