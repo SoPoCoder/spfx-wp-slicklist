@@ -204,6 +204,7 @@ export default class Slicklist extends React.Component<ISlickListProps, ISlickLi
             table1Item={this.state.clickedTable1Item}
             table2Fields={this.state.table2Fields.filter(field => { return field.Title.trim() })} // filter out fields with blank spaces as the Title
             table2Item={getTable2Item(this.props.lookupColumn, this.state.clickedTable1Item, this.state.table2Items)}
+            orderByFields={[this.props.orderByColumn1, this.props.orderByColumn2, this.props.orderByColumn3, this.props.orderByColumn4]}
             showModal={this.state.clickedTable1Item ? true : false}
             onClose={() => { this.setState({ clickedTable1Item: undefined }) }}
         />
@@ -212,6 +213,7 @@ export default class Slicklist extends React.Component<ISlickListProps, ISlickLi
             table1Item={this.state.clickedTable2Item}
             table2Fields={undefined}
             table2Item={undefined}
+            orderByFields={[this.props.orderByColumn1, this.props.orderByColumn2, this.props.orderByColumn3, this.props.orderByColumn4]}
             showModal={this.state.clickedTable2Item ? true : false}
             onClose={() => { this.setState({ clickedTable2Item: undefined }) }}
         />

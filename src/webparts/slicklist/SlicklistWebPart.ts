@@ -151,7 +151,8 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
                 this._list1SelectOptions = result;
                 this._list1NameDropdownDisabled = false;
                 this.context.propertyPane.refresh();
-                this.setResetLookupColumn(reset);
+                if (this.properties.table1SiteURL && this.properties.table1ListName)
+                    this.setResetLookupColumn(reset);
             }
         }).catch((error: Error) => { console.log(error) });
     }

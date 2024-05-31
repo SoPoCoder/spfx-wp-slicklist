@@ -7,7 +7,10 @@ import { getFieldValue } from '../../../Utils';
 export default class SlickModal extends React.Component<ISlickModalProps> {
     public render(): React.ReactElement<ISlickModalProps> {
         const { table1Fields, showModal, onClose, table1Item, table2Item } = this.props;
-        const table2Fields = this.props.table2Fields ? this.props.table2Fields : [];
+        let table2Fields = this.props.table2Fields ? this.props.table2Fields : [];
+        if (table2Fields.length > 0 && this.props.orderByFields) {
+            table2Fields = table2Fields.filter((field) => this.props.orderByFields?.indexOf(field.InternalName) === -1)
+        }
         return (
             <Modal isOpen={showModal} isBlocking={true} ignoreExternalFocusing={true} containerClassName={`${styles.slickmodal}`}>
                 <header>

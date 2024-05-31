@@ -155,6 +155,7 @@ export interface ISlickModalProps {
     table1Item: IListItem | undefined;
     table2Fields: Array<IFieldInfo> | undefined;
     table2Item: IListItem | undefined;
+    orderByFields: Array<string> | undefined;
     showModal: boolean;
     onClose: (value: boolean) => void;
 }
