@@ -195,21 +195,10 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
         if (reset) {
             this.properties.showTable2 = false;
         }
-        this.setResetTable2Props(reset);
+        this.setResetTable2Props();
     }
-    private setResetTable2Props(reset:boolean = false): void {
+    private setResetTable2Props(): void {
         this.getColumnChoices(this.properties.table2SiteURL, this.properties.table2ListName).then((result: IPropertyPaneDropdownOption[]) => {
-            if (reset) {
-                this.properties.orderByColumn1 = "";
-                this.properties.orderByColumn2 = "";
-                this.properties.orderByColumn3 = "";
-                this.properties.orderByColumn4 = "";
-                this._list2ColSelectOptions = [];
-                this._orderByColumn1DropdownDisabled = true;
-                this._orderByColumn2DropdownDisabled = true;
-                this._orderByColumn3DropdownDisabled = true;
-                this._orderByColumn4DropdownDisabled = true;
-            }
             if (result) {
                 this._list2ColSelectOptions = result;
                 this._orderByColumn1DropdownDisabled = false;
@@ -264,7 +253,7 @@ export default class SlicklistWebPart extends BaseClientSideWebPart<ISlicklistWe
                 this.properties.table2Title = newValue;
             this.setResetShowTable2(true);
         } else if (propertyPath === "showTable2") {
-            this.setResetTable2Props(true);
+            this.setResetTable2Props();
         } else {
             super.onPropertyPaneFieldChanged(propertyPath, oldValue, newValue);
         }

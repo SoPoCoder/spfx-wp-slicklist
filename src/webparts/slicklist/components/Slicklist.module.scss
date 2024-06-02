@@ -12,6 +12,11 @@ $themeWhite: '[theme:white, default:#fff]';
 .slicklist {
 
     font-family: "Segoe UI", "Segoe UI Web (West European)", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+    &:-webkit-autofill::first-line {
+        font-family: "Segoe UI", "Segoe UI Web (West European)", "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif !important;
+        font-size: 1em !important;
+        font-weight: normal !important;
+    }
     width: 99%;
     margin: 0 auto; // margin-bottom: 800px;
     padding: 8px;

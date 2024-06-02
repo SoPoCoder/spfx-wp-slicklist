@@ -3,26 +3,38 @@
 ## Summary
 
 A SharePoint framework webpart for modern SharePoint (SharePoint Online) meant to present a SharePoint lists data in a simple, but responsonsive table for small data sets that are frequently referenced.
-- Ideal for commonly referenced lists with a thousand entries or less
-- Loads the entire list into memory and filters client side for very fast lookups
-- Allows selection of Lists on other sites on the same tenant
-- Allows hiding columns based on three pre-set media queries for mobile, tablet and desktop
-- Column filter fields are determined by column data type
+- For commonly referenced lists with less than 5000 entries.
+- Loads the entire list and caches in local storage, filters client side for very fast lookups.
+- Allows selection of Lists on other sites on the same tenant.
+- Allows hiding columns based on three configurable media queries for mobile, tablet and desktop.
+- Clicking entries displays a modal window showing all columns, even ones hidden from list display by media queries.
+- Column filter fields are determined by column data type.
+- Can merge data from two lists via lookup column to allow normalization of large lists.
+- Can show or hide the normalized list. If hidden the information will still be shown in the modal pop-up window.
+- Works with lists and document libraries.
 
 [picture of the solution in action, if possible]
 
 ## Usage
 1. Create a SharePoint list with as many columns as necessary.
-2. Internal column names are used for table headers.
-3. Column titles (what you rename the columns to after creating them) are used for header tooltips.
-3. Unless you want the first column to be named "Title" simply hide that column.
-4. By default the list will be displayed as 5 columns wide on mobile, 8 columns wide on tablet, and 10 columns wide on desktop. These can be adjusted for each table however. 
-5. There are four field types used for filtering:
-    1. Date picker for date type columns
-    2. Select menu for boolean type columns, defaulting to nothing selected.
-    3. Select menu for choice type columns, defaulting to nothing selected.
-    4. Text field for all other column types.
+2. Column titles (what you name the columns or rename them to after creating them) are used for column names.
+3. Column descriptions are used for column title tooltips (displayed when you hover over the column title).
+4. To rename the Title column go to **Settings > List Settings**, then click "Title" under Columns and change the column name.
+5. To rearrange the order of columns go to **Settings > List Settings**, then click "Column Ordering."
 6. Columns added beyond the Desktop Visible Columns attribute will not show in the webpart list but will show in the modal popup. If you do not wish a column to show anywhere in the webpart, simply hide if from the All Items view in the SharePoint list.
+7. You can choose to normalize data from list 1 into a second list and link them together via a lookup column in list 1. 
+
+## Example SharePoint Lists
+![List 1 Example](./assets/employees-list.gif)
+![List 2 Example](./assets/teams-list.gif)
+
+8. Add the `spfx-wp-slicklist.sppkg` to your SharePoint App Catalog and enable it on any sites you wish to add it to.
+9. Edit a SharePoint page and select the new Slicklist webpart.
+10. Configure the webpart by choosing at least one list to display
+11. Optionally modify the default number of columns displayed for mobile, tablet and destop seperately for each table.
+12. Optionally group and order the second table. Fields you choose to group and order by will not show in the modal window display to avoid redundancy.
+
+![Configure the Slicklist webpart](./assets/slicklist-demo.gif)
 
 ## Used SharePoint Framework Version
 
