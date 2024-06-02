@@ -25,8 +25,8 @@ A SharePoint framework webpart for modern SharePoint (SharePoint Online) meant t
 7. You can choose to normalize data from list 1 into a second list and link them together via a lookup column in list 1. 
 
 ## Example SharePoint Lists
-![List 1 Example](./assets/employees-list.gif)
-![List 2 Example](./assets/teams-list.gif)
+![List 1 Example](./assets/employees-list.png)
+![List 2 Example](./assets/teams-list.png)
 
 8. Add the `spfx-wp-slicklist.sppkg` to your SharePoint App Catalog and enable it on any sites you wish to add it to.
 9. Edit a SharePoint page and select the new Slicklist webpart.
