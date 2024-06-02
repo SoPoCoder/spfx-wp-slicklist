@@ -22,9 +22,8 @@ A SharePoint framework webpart for modern SharePoint (SharePoint Online) meant t
 4. To rename the Title column go to **Settings > List Settings**, then click "Title" under Columns and change the column name.
 5. To rearrange the order of columns go to **Settings > List Settings**, then click "Column Ordering."
 6. Columns added beyond the Desktop Visible Columns attribute will not show in the webpart list but will show in the modal popup. If you do not wish a column to show anywhere in the webpart, simply hide if from the All Items view in the SharePoint list.
-7. You can choose to normalize data from list 1 into a second list and link them together via a lookup column in list 1. 
+7. Optionally normalize data from your first list into a second list and link them together via a lookup column: 
 
-## Example SharePoint Lists
 ![List 1 Example](./assets/employees-list.png)
 ![List 2 Example](./assets/teams-list.png)
 
@@ -33,6 +32,7 @@ A SharePoint framework webpart for modern SharePoint (SharePoint Online) meant t
 10. Configure the webpart by choosing at least one list to display
 11. Optionally modify the default number of columns displayed for mobile, tablet and destop seperately for each table.
 12. Optionally group and order the second table. Fields you choose to group and order by will not show in the modal window display to avoid redundancy.
+13. Optionally hide the second table. Lookup data will continue to show in the modal window for Table 1 items.
 
 ![Configure the Slicklist webpart](./assets/slicklist-demo.gif)
 
