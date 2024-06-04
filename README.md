@@ -7,32 +7,30 @@ A SharePoint framework webpart for modern SharePoint (SharePoint Online) meant t
 - Loads the entire list and caches in local storage, filters client side for very fast lookups.
 - Allows selection of Lists on other sites on the same tenant.
 - Allows hiding columns based on three configurable media queries for mobile, tablet and desktop.
-- Clicking entries displays a modal window showing all columns, even ones hidden from list display by media queries.
+- Clicking entries displays a modal window showing all columns, including ones hidden by media queries.
 - Column filter fields are determined by column data type.
 - Can merge data from two lists via lookup column to allow normalization of large lists.
-- Can show or hide the normalized list. If hidden the information will still be shown in the modal pop-up window.
+- Can show or hide the normalized list. When hidden data will still be shown in the modal pop-up window.
 - Works with lists and document libraries.
-
-[picture of the solution in action, if possible]
 
 ## Usage
 1. Create a SharePoint list with as many columns as necessary.
-2. Column titles (what you name the columns or rename them to after creating them) are used for column names.
-3. Column descriptions are used for column title tooltips (displayed when you hover over the column title).
-4. To rename the Title column go to **Settings > List Settings**, then click "Title" under Columns and change the column name.
+2. Column titles (what you name the columns) are used for column names.
+3. Column descriptions are used for column tooltips (displayed when you hover over the column title).
+4. To rename the Title column go to **Settings > List Settings**, then click "Title" under Columns.
 5. To rearrange the order of columns go to **Settings > List Settings**, then click "Column Ordering."
-6. Columns added beyond the Desktop Visible Columns attribute will not show in the webpart list but will show in the modal popup. If you do not wish a column to show anywhere in the webpart, simply hide if from the All Items view in the SharePoint list.
+6. Columns added beyond the Desktop Visible Columns attribute will not show in the webpart list but will show in the modal popup. If you do not wish a column to show anywhere in the webpart, simply hide if from the **All Items** view in the SharePoint list.
 7. Optionally normalize data from your first list into a second list and link them together via a lookup column: 
 
 ![List 1 Example](./assets/employees-list.png)
 ![List 2 Example](./assets/teams-list.png)
 
-8. Add the `spfx-wp-slicklist.sppkg` to your SharePoint App Catalog and enable it on any sites you wish to add it to.
-9. Edit a SharePoint page and select the new Slicklist webpart.
-10. Configure the webpart by choosing at least one list to display
-11. Optionally modify the default number of columns displayed for mobile, tablet and destop seperately for each table.
+8. Add the `spfx-wp-slicklist.sppkg` to your SharePoint App Catalog and enable it on any sites you wish.
+9. Edit a SharePoint page and select the new Slicklist webpart. It supports full-width page layouts.
+10. Configure the webpart by choosing at least one list to display.
+11. Optionally modify the default number of columns displayed for mobile, tablet and destop.
 12. Optionally group and order the second table. Fields you choose to group and order by will not show in the modal window display to avoid redundancy.
-13. Optionally hide the second table. Lookup data will continue to show in the modal window for Table 1 items.
+13. Optionally hide the second table. When hidden data will still be shown in the modal pop-up window.
 
 ![Configure the Slicklist webpart](./assets/slicklist-demo.gif)
 
